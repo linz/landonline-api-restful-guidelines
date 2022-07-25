@@ -2,7 +2,7 @@
   "rules": [
     {
       "id": "#100",
-      "title": "MUST follow API first principle"
+      "title": "SHOULD follow API first principle"
     },
     {
       "id": "#101",
@@ -350,7 +350,7 @@
     },
     {
       "id": "#192",
-      "title": "MUST publish OpenAPI specification"
+      "title": "MUST publish OpenAPI specification -- Under Construction"
     },
     {
       "id": "#193",
