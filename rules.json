@@ -10,7 +10,7 @@
     },
     {
       "id": "#102",
-      "title": "SHOULD provide API user manual"
+      "title": "MAY provide API user manual"
     },
     {
       "id": "#103",
@@ -70,7 +70,7 @@
     },
     {
       "id": "#118",
-      "title": "MUST property names must be snake_case (and never camelCase)"
+      "title": "MUST property names must be camelCase (and never snake_case)"
     },
     {
       "id": "#120",
@@ -110,7 +110,7 @@
     },
     {
       "id": "#130",
-      "title": "MUST use snake_case (never camelCase) for query parameters"
+      "title": "MUST use camelCase (never snake_case) for query parameters"
     },
     {
       "id": "#132",
