@@ -314,7 +314,7 @@
     },
     {
       "id": "#183",
-      "title": "SHOULD use only the specified proprietary Zalando headers"
+      "title": "SHOULD use only the specified LINZ headers"
     },
     {
       "id": "#184",
@@ -498,7 +498,7 @@
     },
     {
       "id": "#233",
-      "title": "MUST supportX-Flow-ID"
+      "title": "MUST supportX-LINZ-Correlation-Id"
     },
     {
       "id": "#234",
