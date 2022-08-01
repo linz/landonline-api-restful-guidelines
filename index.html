@@ -1553,8 +1553,8 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </li>
 <li><a href="#pagination">14. REST Design - Pagination</a>
 <ul class="sectlevel2">
-<li><a href="#159"><span class="must-keyword"><strong>MUST</strong></span> support pagination</a></li>
-<li><a href="#160"><span class="should-keyword"><strong>SHOULD</strong></span> prefer cursor-based pagination, avoid offset-based pagination</a></li>
+<li><a href="#159"><span class="must-keyword"><strong>MUST</strong></span> support pagination (Under Construction)</a></li>
+<li><a href="#160"><span class="may-keyword"><strong>MAY</strong></span> use cursor-based pagination, instead of offset-based pagination</a></li>
 <li><a href="#248"><span class="should-keyword"><strong>SHOULD</strong></span> use pagination response page object</a></li>
 <li><a href="#161"><span class="should-keyword"><strong>SHOULD</strong></span> use pagination links where applicable</a></li>
 </ul>
@@ -6885,7 +6885,10 @@ proxy cache.</p>
 <h2 id="pagination"><a class="link" href="#pagination">14. REST Design - Pagination</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="159"><a class="link" href="#159"><span class="must-keyword"><strong>MUST</strong></span> support pagination</a></h3>
+<h3 id="159"><a class="link" href="#159"><span class="must-keyword"><strong>MUST</strong></span> support pagination (Under Construction)</a></h3>
+<div class="paragraph">
+<p><a href="https://confluence.linz.govt.nz/display/STEP/Api+Standards+-+Pagination">DRAFT Proposal</a></p>
+</div>
 <div class="paragraph">
 <p>Access to lists of data items must support pagination to protect the service
 against overload as well as for best client side iteration and batch processing
@@ -6923,7 +6926,7 @@ you must stick to the common query parameter names defined in <a href="#137"><sp
 </div>
 </div>
 <div class="sect2">
-<h3 id="160"><a class="link" href="#160"><span class="should-keyword"><strong>SHOULD</strong></span> prefer cursor-based pagination, avoid offset-based pagination</a></h3>
+<h3 id="160"><a class="link" href="#160"><span class="may-keyword"><strong>MAY</strong></span> use cursor-based pagination, instead of offset-based pagination</a></h3>
 <div class="paragraph">
 <p>Cursor-based pagination is usually better and more efficient when compared to
 offset-based pagination. Especially when it comes to high-data volumes and/or
@@ -7003,12 +7006,16 @@ to safely recreate the collection (see also <a href="#cursor-based-pagination">C
 <h3 id="248"><a class="link" href="#248"><span class="should-keyword"><strong>SHOULD</strong></span> use pagination response page object</a></h3>
 <div id="pagination-fields" class="paragraph">
 <p>For iterating over collections (result sets) we propose to either use cursors
-(see <a href="#160"><span class="should-keyword"><strong>SHOULD</strong></span> prefer cursor-based pagination, avoid offset-based pagination</a>) or simple hypertext controls (see <a href="#161"><span class="should-keyword"><strong>SHOULD</strong></span> use pagination links where applicable</a>). To implement these
+(see <a href="#160"><span class="may-keyword"><strong>MAY</strong></span> use cursor-based pagination, instead of offset-based pagination</a>) or simple hypertext controls (see <a href="#161"><span class="should-keyword"><strong>SHOULD</strong></span> use pagination links where applicable</a>). To implement these
 in a consistent way, we have defined a response page object pattern with the
 following field semantics:</p>
 </div>
 <div class="ulist">
 <ul>
+<li>
+<p><a id="_links"></a>{_links}:the link or cursor in a pagination response or object
+pointing to the same collection object or page.</p>
+</li>
 <li>
 <p><a id="self"></a><a href="#self"><code>self</code></a>:the link or cursor in a pagination response or object
 pointing to the same collection object or page.</p>
@@ -7038,8 +7045,8 @@ transport the page content:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a id="items"></a><a href="#items"><code>items</code></a>: array of resources, holding all the items of the current
-page (<a href="#items"><code>items</code></a> may be replaced by a resource name).</p>
+<p><a id="resources"></a>{resources}: array of resources, holding all the items of the current
+page (<a href="#items"><code>items</code></a> MUST be replaced by a resource name e.g. titles).</p>
 </li>
 </ul>
 </div>
@@ -7060,44 +7067,46 @@ request to filter the collection resource.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">ResponsePage</span>:
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">ResourceResponse</span>:
   <span class="key">type</span>: <span class="string"><span class="content">object</span></span>
   <span class="key">required</span>:
-    - <span class="string"><span class="content">items</span></span>
-    - <span class="string"><span class="content">next</span></span>
+    - <span class="string"><span class="content">resources</span></span>
   <span class="key">properties</span>:
-    <span class="key">self</span>:
-      <span class="key">description</span>: <span class="string"><span class="content">Pagination link|cursor pointing to the current page.</span></span>
-      <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-      <span class="key">format</span>: <span class="string"><span class="content">uri|cursor</span></span>
-    <span class="key">first</span>:
-      <span class="key">description</span>: <span class="string"><span class="content">Pagination link|cursor pointing to the first page.</span></span>
-      <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-      <span class="key">format</span>: <span class="string"><span class="content">uri|cursor</span></span>
-    <span class="key">prev</span>:
-      <span class="key">description</span>: <span class="string"><span class="content">Pagination link|cursor pointing to the previous page.</span></span>
-      <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-      <span class="key">format</span>: <span class="string"><span class="content">uri|cursor</span></span>
-    <span class="key">next</span>:
-      <span class="key">description</span>: <span class="string"><span class="content">Pagination link|cursor pointing to the next page.</span></span>
-      <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-      <span class="key">format</span>: <span class="string"><span class="content">uri|cursor</span></span>
-    <span class="key">last</span>:
-      <span class="key">description</span>: <span class="string"><span class="content">Pagination link|cursor pointing to the last page.</span></span>
-      <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-      <span class="key">format</span>: <span class="string"><span class="content">uri|cursor</span></span>
-
-    <span class="key">query</span>:
-      <span class="key">description</span>: <span class="string"><span class="delimiter">&gt;</span><span class="content">
-        Object containing the query filters applied to the collection resource.</span></span>
+    <span class="key">_links</span>:
       <span class="key">type</span>: <span class="string"><span class="content">object</span></span>
-      <span class="key">properties</span>: <span class="string"><span class="content">...</span></span>
-
-    <span class="key">items</span>:
+      <span class="key">required</span>:
+        - <span class="string"><span class="content">next</span></span>
+      <span class="key">properties</span>:
+        <span class="key">self</span>:
+          <span class="key">description</span>: <span class="string"><span class="content">Pagination link|cursor pointing to the current page.</span></span>
+          <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
+          <span class="key">format</span>: <span class="string"><span class="content">uri|cursor</span></span>
+        <span class="key">first</span>:
+          <span class="key">description</span>: <span class="string"><span class="content">Pagination link|cursor pointing to the first page.</span></span>
+          <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
+          <span class="key">format</span>: <span class="string"><span class="content">uri|cursor</span></span>
+        <span class="key">prev</span>:
+          <span class="key">description</span>: <span class="string"><span class="content">Pagination link|cursor pointing to the previous page.</span></span>
+          <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
+          <span class="key">format</span>: <span class="string"><span class="content">uri|cursor</span></span>
+        <span class="key">next</span>:
+          <span class="key">description</span>: <span class="string"><span class="content">Pagination link|cursor pointing to the next page.</span></span>
+          <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
+          <span class="key">format</span>: <span class="string"><span class="content">uri|cursor</span></span>
+        <span class="key">last</span>:
+          <span class="key">description</span>: <span class="string"><span class="content">Pagination link|cursor pointing to the last page.</span></span>
+          <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
+          <span class="key">format</span>: <span class="string"><span class="content">uri|cursor</span></span>
+        <span class="key">query</span>:
+          <span class="key">description</span>: <span class="string"><span class="delimiter">&gt;</span><span class="content">
+            Object containing the query filters applied to the collection resource.</span></span>
+          <span class="key">type</span>: <span class="string"><span class="content">object</span></span>
+          <span class="key">properties</span>: <span class="string"><span class="content">...</span></span>
+    <span class="key">resources</span>:
       <span class="key">description</span>: <span class="string"><span class="content">Array of collection items.</span></span>
       <span class="key">type</span>: <span class="string"><span class="content">array</span></span>
       <span class="key">required</span>: <span class="string"><span class="content">false</span></span>
-      <span class="key">items</span>:
+      <span class="key">resources</span>:
         <span class="key">type</span>: <span class="string"><span class="content">...</span></span></code></pre>
 </div>
 </div>
@@ -7113,29 +7122,59 @@ request to filter the collection resource.</p>
 controls</a> for paginating over collections whenever applicable as follows (see
 also <a href="#pagination-fields">[pagination-fields]</a> for details):</p>
 </div>
+<div class="paragraph">
+<p>Offset based pagination</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json">{
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">self</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://my-service.zalandoapis.com/resources?cursor=&lt;self-position&gt;</span><span class="delimiter">&quot;</span></span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">first</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://my-service.zalandoapis.com/resources?cursor=&lt;first-position&gt;</span><span class="delimiter">&quot;</span></span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">prev</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://my-service.zalandoapis.com/resources?cursor=&lt;previous-position&gt;</span><span class="delimiter">&quot;</span></span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">next</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://my-service.zalandoapis.com/resources?cursor=&lt;next-position&gt;</span><span class="delimiter">&quot;</span></span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://my-service.zalandoapis.com/resources?cursor=&lt;last-position&gt;</span><span class="delimiter">&quot;</span></span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>: {
-    <span class="key"><span class="delimiter">&quot;</span><span class="content">query-param-&lt;1&gt;</span><span class="delimiter">&quot;</span></span>: <span class="error">.</span><span class="error">.</span><span class="error">.</span>,
-    <span class="key"><span class="delimiter">&quot;</span><span class="content">query-param-&lt;n&gt;</span><span class="delimiter">&quot;</span></span>: <span class="error">.</span><span class="error">.</span><span class="error">.</span>
-  },
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">items</span><span class="delimiter">&quot;</span></span>: [<span class="error">.</span><span class="error">.</span><span class="error">.</span>]
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">titles</span><span class="delimiter">&quot;</span></span>: [<span class="error">.</span><span class="error">.</span><span class="error">.</span>],
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">_links</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">self</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://api.gateway.linz.co.nz/titles?offset=10&amp;limit=10</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">first</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://api.gateway.linz.co.nz/titles?offset=0&amp;limit=10</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">prev</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://api.gateway.linz.co.nz/titles?offset=0&amp;limit=10</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">next</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://api.gateway.linz.co.nz/titles?offset=20&amp;limit=10</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://api.gateway.linz.co.nz/titles?offset=50&amp;limit=10</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">query-param-&lt;1&gt;</span><span class="delimiter">&quot;</span></span>: <span class="error">.</span><span class="error">.</span><span class="error">.</span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">query-param-&lt;n&gt;</span><span class="delimiter">&quot;</span></span>: <span class="error">.</span><span class="error">.</span><span class="error">.</span>
+    }
+  }
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Remark:</strong> You should avoid providing a total count unless there is a clear
+<p><strong>Remark:</strong> In the above case in order to calculate "last" link, the values offset and limit need to be calculated off
+of the total.
+<br>
+<br>
+You should avoid providing a total count unless there is a clear
 need to do so. Very often, there are significant system and performance
 implications when supporting full counts. Especially, if the data set grows
 and requests become complex queries and filters drive full scans. While this
 is an implementation detail relative to the API, it is important to consider
 the ability to support serving counts over the life of a service.</p>
+</div>
+<div class="paragraph">
+<p>Cursor Based</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">titles</span><span class="delimiter">&quot;</span></span>: [<span class="error">.</span><span class="error">.</span><span class="error">.</span>],
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">_links</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">self</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://api.gateway.linz.co.nz/titles?cursor=&lt;self-position&gt;</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">first</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://api.gateway.linz.co.nz/titles?cursor=&lt;first-position&gt;</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">prev</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://api.gateway.linz.co.nz/titles?cursor=&lt;previous-position&gt;</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">next</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://api.gateway.linz.co.nz/titles?cursor=&lt;next-position&gt;</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">last</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">http://api.gateway.linz.co.nz/titles?cursor=&lt;last-position&gt;</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">query-param-&lt;1&gt;</span><span class="delimiter">&quot;</span></span>: <span class="error">.</span><span class="error">.</span><span class="error">.</span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">query-param-&lt;n&gt;</span><span class="delimiter">&quot;</span></span>: <span class="error">.</span><span class="error">.</span><span class="error">.</span>
+    }
+  }
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -9218,7 +9257,7 @@ implementing RESTful APIs.</p>
 <h3 id="cursor-based-pagination"><a class="link" href="#cursor-based-pagination">Cursor-based pagination in RESTful APIs</a></h3>
 <div class="paragraph">
 <p>Cursor-based pagination is a very powerful and valuable technique (see also
-<a href="#160"><span class="should-keyword"><strong>SHOULD</strong></span> prefer cursor-based pagination, avoid offset-based pagination</a>, that allows to efficiently provide a stable view on changing data.
+<a href="#160"><span class="may-keyword"><strong>MAY</strong></span> use cursor-based pagination, instead of offset-based pagination</a>, that allows to efficiently provide a stable view on changing data.
 This is obtained by using an anchor element that allows to retrieve all page
 elements directly via an ordering combined-index, usually based on <code>created_at</code>
 or <code>modified_at</code>. Simple said, the cursor is the information set needed to
@@ -10036,7 +10075,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-01 01:35:25 UTC
+Last updated 2022-08-01 22:23:52 UTC
 </div>
 </div>
 </body>

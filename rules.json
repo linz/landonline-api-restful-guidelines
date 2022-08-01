@@ -222,11 +222,11 @@
     },
     {
       "id": "#159",
-      "title": "MUST support pagination"
+      "title": "MUST support pagination (Under Construction)"
     },
     {
       "id": "#160",
-      "title": "SHOULD prefer cursor-based pagination, avoid offset-based pagination"
+      "title": "MAY use cursor-based pagination, instead of offset-based pagination"
     },
     {
       "id": "#161",
