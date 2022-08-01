@@ -126,7 +126,7 @@
     },
     {
       "id": "#135",
-      "title": "SHOULD not use /api as base path"
+      "title": "MAY use /api as base path - (Restore once gateway is in)"
     },
     {
       "id": "#136",
@@ -506,7 +506,7 @@
     },
     {
       "id": "#235",
-      "title": "SHOULD name date/time properties with `_at` suffix"
+      "title": "SHOULD name date/time properties with `At` suffix"
     },
     {
       "id": "#236",

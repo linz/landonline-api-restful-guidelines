@@ -1456,7 +1456,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </li>
 <li><a href="#urls">7. REST Basics - URLs</a>
 <ul class="sectlevel2">
-<li><a href="#135"><span class="should-keyword"><strong>SHOULD</strong></span> not use /api as base path</a></li>
+<li><a href="#135"><span class="may-keyword"><strong>MAY</strong></span> use /api as base path - (Restore once gateway is in)</a></li>
 <li><a href="#134"><span class="must-keyword"><strong>MUST</strong></span> pluralize resource names</a></li>
 <li><a href="#228"><span class="must-keyword"><strong>MUST</strong></span> use URL-friendly resource identifiers</a></li>
 <li><a href="#129"><span class="must-keyword"><strong>MUST</strong></span> use kebab-case for path segments</a></li>
@@ -1483,7 +1483,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#120"><span class="should-keyword"><strong>SHOULD</strong></span> pluralize array names</a></li>
 <li><a href="#118"><span class="must-keyword"><strong>MUST</strong></span> property names must be camelCase (and never snake_case)</a></li>
 <li><a href="#240"><span class="should-keyword"><strong>SHOULD</strong></span> declare enum values using UPPER_SNAKE_CASE string</a></li>
-<li><a href="#235"><span class="should-keyword"><strong>SHOULD</strong></span> name date/time properties with <code>_at</code> suffix</a></li>
+<li><a href="#235"><span class="should-keyword"><strong>SHOULD</strong></span> name date/time properties with <code>At</code> suffix</a></li>
 <li><a href="#216"><span class="should-keyword"><strong>SHOULD</strong></span> define maps using <code>additionalProperties</code></a></li>
 <li><a href="#123"><span class="must-keyword"><strong>MUST</strong></span> use same semantics for <code>null</code> and absent properties</a></li>
 <li><a href="#122"><span class="must-keyword"><strong>MUST</strong></span> not use <code>null</code> for boolean properties</a></li>
@@ -3097,7 +3097,7 @@ pagination use cases ordered along creation time.</p>
 <p>Guidelines for naming and designing resource paths and query parameters.</p>
 </div>
 <div class="sect2">
-<h3 id="135"><a class="link" href="#135"><span class="should-keyword"><strong>SHOULD</strong></span> not use /api as base path</a></h3>
+<h3 id="135"><a class="link" href="#135"><span class="may-keyword"><strong>MAY</strong></span> use /api as base path - (Restore once gateway is in)</a></h3>
 <div class="paragraph">
 <p>In most cases, all resources provided by a service are part of the
 public API, and therefore should be made available under the root "/"
@@ -3610,7 +3610,7 @@ This implies in turn that object names should be singular.</p>
 <div class="sect2">
 <h3 id="118"><a class="link" href="#118"><span class="must-keyword"><strong>MUST</strong></span> property names must be camelCase (and never snake_case)</a></h3>
 <div class="paragraph">
-<p>Property names are restricted to ASCII camelCase strings matching regex <code>[a-z]<strong class="a-z0-9">(?:[A-Z0-9]+[a-z0-9]</strong>)*</code>.
+<p>Property names are restricted to ASCII camelCase strings matching regex <code>[a-z][a-z0-9]*(?:[A-Z0-9]+[a-z0-9]*)*</code>.
 The first character must be a lower case letter and subsequent
 words with Capitalised first letters.</p>
 </div>
@@ -3625,8 +3625,8 @@ words with Capitalised first letters.</p>
 <div class="paragraph">
 <p>Rationale: No established industry standard exists, while many popular Internet
 companies prefer snake_case: e.g. GitHub, Stack Exchange, Twitter.
-Others, like Google and Amazon, use both - not only camelCase. However will the predominate languages in LINZ being
-Typescript and Kotlin both of which use camelCasing, camelCasing is expected.</p>
+Others, like Google and Amazon, use both - not only camelCase. However the predominate languages in LINZ are
+Typescript and Kotlin both of which use camelCasing, keeping these aligned is sensible.</p>
 </div>
 </div>
 <div class="sect2">
@@ -3645,34 +3645,27 @@ declaring possible values for a <a href="#137">rule 137</a> [<code>sort</code> p
 </div>
 </div>
 <div class="sect2">
-<h3 id="235"><a class="link" href="#235"><span class="should-keyword"><strong>SHOULD</strong></span> name date/time properties with <code>_at</code> suffix</a></h3>
+<h3 id="235"><a class="link" href="#235"><span class="should-keyword"><strong>SHOULD</strong></span> name date/time properties with <code>At</code> suffix</a></h3>
 <div class="paragraph">
-<p>Dates and date-time properties should end with <code>_at</code> to distinguish them from
+<p>Dates and date-time properties should end with <code>At</code> to distinguish them from
 boolean properties which otherwise would have very similar or even identical
 names:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="#created_at"><code>created_at</code></a> rather than <a href="#created"><code>created</code></a>,</p>
+<p><code>createdAt</code> rather than <code>created</code>,</p>
 </li>
 <li>
-<p><a href="#modified_at"><code>modified_at</code></a> rather than <a href="#modified"><code>modified</code></a>,</p>
+<p><code>modifiedAt</code> rather than <code>modified</code>,</p>
 </li>
 <li>
-<p><code>occurred_at</code> rather than <code>occurred</code>, and</p>
+<p><code>occurredAt</code> rather than <code>occurred</code>, and</p>
 </li>
 <li>
-<p><code>returned_at</code> rather than <code>returned</code>.</p>
+<p><code>returnedAt</code> rather than <code>returned</code>.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p><strong>Hint:</strong> Use <code>format: date-time</code> (or as <code>format: date</code>) as required in <a href="#238"><span class="must-keyword"><strong>MUST</strong></span> use standard data formats</a>.</p>
-</div>
-<div class="paragraph">
-<p><strong>Note:</strong> <a href="#created"><code>created</code></a> and <a href="#modified"><code>modified</code></a> were mentioned in an earlier version of the
-guideline and are therefore still accepted for APIs that predate this rule.</p>
 </div>
 </div>
 <div class="sect2">
@@ -3874,7 +3867,7 @@ typically is used to carry the <a href="https://tools.ietf.org/html/rfc7232#sect
 </ul>
 </div>
 <div class="paragraph">
-<p>Further common fields are defined in <a href="#235"><span class="should-keyword"><strong>SHOULD</strong></span> name date/time properties with <code>_at</code> suffix</a>.
+<p>Further common fields are defined in <a href="#235"><span class="should-keyword"><strong>SHOULD</strong></span> name date/time properties with <code>At</code> suffix</a>.
 The following guidelines define standard objects and fields:</p>
 </div>
 <div class="ulist">
@@ -9789,7 +9782,7 @@ to see a list of all changes.</p>
 <p><code>2019-07-30</code>: change "<span class="should-keyword"><strong>SHOULD</strong></span> Null values should have their fields removed to" <a href="#123"><span class="must-keyword"><strong>MUST</strong></span> use same semantics for <code>null</code> and absent properties</a>.</p>
 </li>
 <li>
-<p><code>2019-07-25</code>: new rule <a href="#235"><span class="should-keyword"><strong>SHOULD</strong></span> name date/time properties with <code>_at</code> suffix</a>.</p>
+<p><code>2019-07-25</code>: new rule <a href="#235"><span class="should-keyword"><strong>SHOULD</strong></span> name date/time properties with <code>At</code> suffix</a>.</p>
 </li>
 <li>
 <p><code>2019-07-18</code>: improved cursor guideline for <a href="#get-with-body"><code>GET with body</code></a>.</p>
@@ -9816,7 +9809,7 @@ to see a list of all changes.</p>
 <p><code>2019-01-21:</code> Improve guidance on idempotency, introduce idempotency-key (<a href="#229"><span class="should-keyword"><strong>SHOULD</strong></span> consider to design <code>POST</code> and <code>PATCH</code> idempotent</a>, <a href="#231"><span class="should-keyword"><strong>SHOULD</strong></span> use secondary key for idempotent <code>POST</code> design</a>).</p>
 </li>
 <li>
-<p><code>2019-01-16</code>: Change <a href="#135"><span class="should-keyword"><strong>SHOULD</strong></span> not use /api as base path</a> from <span class="may-keyword"><strong>MAY</strong></span> to {SHOULD NOT}</p>
+<p><code>2019-01-16</code>: Change <a href="#135"><span class="may-keyword"><strong>MAY</strong></span> use /api as base path - (Restore once gateway is in)</a> from <span class="may-keyword"><strong>MAY</strong></span> to {SHOULD NOT}</p>
 </li>
 <li>
 <p><code>2018-10-19</code>: Add <code>ordering_key_field</code> to event type definition schema (<a href="#197"><span class="must-keyword"><strong>MUST</strong></span> specify and register events as event types</a>, <a href="#203"><span class="should-keyword"><strong>SHOULD</strong></span> provide explicit event ordering for general events</a>)</p>
@@ -10043,7 +10036,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-28 03:07:59 UTC
+Last updated 2022-08-01 01:35:25 UTC
 </div>
 </div>
 </body>
