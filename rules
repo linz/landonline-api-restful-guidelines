@@ -226,7 +226,7 @@
     },
     {
       "id": "#160",
-      "title": "MAY use cursor-based pagination, instead of offset-based pagination"
+      "title": "MAY use cursor-based pagination, prefer offset-based pagination"
     },
     {
       "id": "#161",
