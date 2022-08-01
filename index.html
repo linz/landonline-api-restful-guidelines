@@ -1513,7 +1513,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#220"><span class="must-keyword"><strong>MUST</strong></span> use most specific HTTP status codes</a></li>
 <li><a href="#152"><span class="must-keyword"><strong>MUST</strong></span> use code 207 for batch or bulk requests</a></li>
 <li><a href="#153"><span class="must-keyword"><strong>MUST</strong></span> use code 429 with headers for rate limits</a></li>
-<li><a href="#176"><span class="must-keyword"><strong>MUST</strong></span> support problem JSON</a></li>
+<li><a href="#176"><span class="must-keyword"><strong>MUST</strong></span> support problem JSON (Under Construction)</a></li>
 <li><a href="#177"><span class="must-keyword"><strong>MUST</strong></span> not expose stack traces</a></li>
 </ul>
 </li>
@@ -2116,7 +2116,7 @@ for details).</p>
 <p><strong>Hint:</strong> The formerly used remote references to the <code>Problem</code> API fragment
 (aliases <code><a href="https://opensource.zalando.com/problem/" class="bare">https://opensource.zalando.com/problem/</a></code> and
 <code><a href="https://zalando.github.io/problem/" class="bare">https://zalando.github.io/problem/</a></code>) are deprecated, but still supported for
-compatibility (<a href="#176"><span class="must-keyword"><strong>MUST</strong></span> support problem JSON</a> on how to replace).</p>
+compatibility (<a href="#176"><span class="must-keyword"><strong>MUST</strong></span> support problem JSON (Under Construction)</a> on how to replace).</p>
 </div>
 <div class="paragraph">
 <p>As we control these URLs, we ensure that their content is <strong>durable</strong> and
@@ -3588,7 +3588,7 @@ for specific use cases where clients may not interpret the payload structure.</p
 <p>You should use standard media types (defined in <a href="https://www.iana.org/assignments/media-types/media-types.xhtml">media type registry</a>
 of Internet Assigned Numbers Authority (IANA)) as <code>content-type</code> (or <code>accept</code>) header
 information. More specifically, for JSON payload you should use the standard media type
-<code>application/json</code> (or <code>application/problem+json</code> for <a href="#176"><span class="must-keyword"><strong>MUST</strong></span> support problem JSON</a>).</p>
+<code>application/json</code> (or <code>application/problem+json</code> for <a href="#176"><span class="must-keyword"><strong>MUST</strong></span> support problem JSON (Under Construction)</a>).</p>
 </div>
 <div class="paragraph">
 <p>You should avoid using custom media types like <code>application/x.zalando.article+json</code>.
@@ -5578,7 +5578,10 @@ number of requests made within a given window for each named entity.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="176"><a class="link" href="#176"><span class="must-keyword"><strong>MUST</strong></span> support problem JSON</a></h3>
+<h3 id="176"><a class="link" href="#176"><span class="must-keyword"><strong>MUST</strong></span> support problem JSON (Under Construction)</a></h3>
+<div class="paragraph">
+<p><a href="https://confluence.linz.govt.nz/display/STEP/API+Standards+-+Error+Response+Format">DRAFT Proposal</a></p>
+</div>
 <div class="paragraph">
 <p><a href="https://tools.ietf.org/html/rfc7807">RFC 7807</a> defines a Problem JSON object using the media type
 <code>application/problem+json</code> to provide an extensible human and machine readable
@@ -9757,7 +9760,7 @@ to see a list of all changes.</p>
 <p><code>2021-02-16</code>: define how to reference models outside the api in <a href="#234"><span class="must-keyword"><strong>MUST</strong></span> only use durable and immutable remote references</a>.</p>
 </li>
 <li>
-<p><code>2021-02-15</code>: improve guideline <a href="#176"><span class="must-keyword"><strong>MUST</strong></span> support problem JSON</a>&#8201;&#8212;&#8201;clients must be prepared to not receive problem return objects.</p>
+<p><code>2021-02-15</code>: improve guideline <a href="#176"><span class="must-keyword"><strong>MUST</strong></span> support problem JSON (Under Construction)</a>&#8201;&#8212;&#8201;clients must be prepared to not receive problem return objects.</p>
 </li>
 <li>
 <p><code>2021-01-19</code>: more details for <a href="#get-with-body"><code>GET with body</code></a> and <a href="#delete-with-body"><code>DELETE with body</code></a> (<a href="#148"><span class="must-keyword"><strong>MUST</strong></span> use HTTP methods correctly</a>).</p>
@@ -10074,7 +10077,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-01 22:45:32 UTC
+Last updated 2022-08-01 23:41:55 UTC
 </div>
 </div>
 </body>
