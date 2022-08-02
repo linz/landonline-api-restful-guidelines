@@ -437,10 +437,6 @@
       "title": "MUST prepare event consumers for duplicate events"
     },
     {
-      "id": "#215",
-      "title": "MUST provide API identifiers"
-    },
-    {
       "id": "#216",
       "title": "SHOULD define maps using `additionalProperties`"
     },
