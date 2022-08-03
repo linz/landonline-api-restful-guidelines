@@ -58,11 +58,11 @@
     },
     {
       "id": "#114",
-      "title": "MUST use media type versioning"
+      "title": "MUST not use media type versioning"
     },
     {
       "id": "#115",
-      "title": "MUST not use URL versioning"
+      "title": "MUST use URL versioning"
     },
     {
       "id": "#116",

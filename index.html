@@ -1565,8 +1565,8 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#108"><span class="must-keyword"><strong>MUST</strong></span> prepare clients to accept compatible API extensions</a></li>
 <li><a href="#111"><span class="must-keyword"><strong>MUST</strong></span> treat OpenAPI specification as open for extension by default</a></li>
 <li><a href="#113"><span class="should-keyword"><strong>SHOULD</strong></span> avoid versioning</a></li>
-<li><a href="#114"><span class="must-keyword"><strong>MUST</strong></span> use media type versioning</a></li>
-<li><a href="#115"><span class="must-keyword"><strong>MUST</strong></span> not use URL versioning</a></li>
+<li><a href="#115"><span class="must-keyword"><strong>MUST</strong></span> use URL versioning</a></li>
+<li><a href="#114"><span class="must-keyword"><strong>MUST</strong></span> not use media type versioning</a></li>
 <li><a href="#110"><span class="must-keyword"><strong>MUST</strong></span> always return JSON objects as top-level data structures</a></li>
 <li><a href="#112"><span class="should-keyword"><strong>SHOULD</strong></span> used open-ended list of values (<code>x-extensible-enum</code>) for enumerations</a></li>
 </ul>
@@ -6968,7 +6968,7 @@ consumers that cannot be broken via unilateral decisions.</p>
 </div>
 <div class="paragraph">
 <p>We strongly encourage using compatible API extensions and discourage versioning
-(see <a href="#113"><span class="should-keyword"><strong>SHOULD</strong></span> avoid versioning</a> and <a href="#114"><span class="must-keyword"><strong>MUST</strong></span> use media type versioning</a> below). The following guidelines for service providers
+(see <a href="#113"><span class="should-keyword"><strong>SHOULD</strong></span> avoid versioning</a> and <a href="#114"><span class="must-keyword"><strong>MUST</strong></span> not use media type versioning</a> below). The following guidelines for service providers
 (<a href="#107"><span class="should-keyword"><strong>SHOULD</strong></span> prefer compatible extensions</a>) and consumers (<a href="#108"><span class="must-keyword"><strong>MUST</strong></span> prepare clients to accept compatible API extensions</a>) enable us (having Postel’s Law in mind) to
 make compatible changes without versioning.</p>
 </div>
@@ -7213,12 +7213,44 @@ microservice</p>
 <p>As we discourage versioning by all means because of the manifold disadvantages,
 we strongly recommend to only use the first two approaches.</p>
 </div>
+<div class="paragraph">
+<p>Further reading:
+<a href="https://blog.apisyouwonthate.com/api-versioning-has-no-right-way-f3c75457c0b7">API
+Versioning Has No "Right Way"</a> provides an overview on different versioning
+approaches to handle breaking changes without being opinionated.</p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="114"><a class="link" href="#114"><span class="must-keyword"><strong>MUST</strong></span> use media type versioning</a></h3>
+<h3 id="115"><a class="link" href="#115"><span class="must-keyword"><strong>MUST</strong></span> use URL versioning</a></h3>
 <div class="paragraph">
 <p>However, when API versioning is unavoidable, you have to design your
-multi-version RESTful APIs using media type versioning (see <a href="#115"><span class="must-keyword"><strong>MUST</strong></span> not use URL versioning</a>).
+multi-version RESTful APIs using url versioning (see <a href="#114"><span class="must-keyword"><strong>MUST</strong></span> not use media type versioning</a>).</p>
+</div>
+<div class="paragraph">
+<p>If you want to route requests of different versions to different places, it&#8217;s often easier for proxies/routers to do
+this based on URL path info than HTTP header info.</p>
+</div>
+<div class="paragraph">
+<p>But there are some Cons
+With URL versioning a (major) version number is included in the path, e.g.
+<code>/v1/customers</code>. The consumer has to wait until the provider has been released
+and deployed. If the consumer also supports hypermedia links — even in their
+APIs — to drive workflows (HATEOAS), this quickly becomes complex. So does
+coordinating version upgrades — especially with hyperlinked service
+dependencies — when using URL versioning.</p>
+</div>
+<div class="paragraph">
+<p>Media type versioning is less tightly coupled since
+it supports content negotiation and hence reduces complexity of release
+management.<br>
+However, Tyk doesn&#8217;t read, the Accept: header which the is recommended for Content negotiation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="114"><a class="link" href="#114"><span class="must-keyword"><strong>MUST</strong></span> not use media type versioning</a></h3>
+<div class="paragraph">
+<p>However, when API versioning is unavoidable, you have to design your
+multi-version RESTful APIs using media type versioning (see <a href="#115"><span class="must-keyword"><strong>MUST</strong></span> use URL versioning</a>).
 Media type versioning is less tightly coupled since
 it supports content negotiation and hence reduces complexity of release
 management.</p>
@@ -7320,25 +7352,6 @@ with the standard <code>application/json</code> media type and do not use media 
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>Further reading:
-<a href="https://blog.apisyouwonthate.com/api-versioning-has-no-right-way-f3c75457c0b7">API
-Versioning Has No "Right Way"</a> provides an overview on different versioning
-approaches to handle breaking changes without being opinionated.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="115"><a class="link" href="#115"><span class="must-keyword"><strong>MUST</strong></span> not use URL versioning</a></h3>
-<div class="paragraph">
-<p>With URL versioning a (major) version number is included in the path, e.g.
-<code>/v1/customers</code>. The consumer has to wait until the provider has been released
-and deployed. If the consumer also supports hypermedia links — even in their
-APIs — to drive workflows (HATEOAS), this quickly becomes complex. So does
-coordinating version upgrades — especially with hyperlinked service
-dependencies — when using URL versioning. To avoid this tighter coupling and
-complexer release management we do not use URL versioning, instead we <a href="#114"><span class="must-keyword"><strong>MUST</strong></span> use media type versioning</a>
-with content negotiation.</p>
 </div>
 </div>
 <div class="sect2">
@@ -9543,7 +9556,7 @@ to see a list of all changes.</p>
 <p><code>2020-08-20</code>: change <a href="#183"><span class="should-keyword"><strong>SHOULD</strong></span> use only the specified LINZ headers</a> from <span class="must-keyword"><strong>MUST</strong></span> to <span class="should-keyword"><strong>SHOULD</strong></span>, mention gateway-specific headers (which are not part of the public API).</p>
 </li>
 <li>
-<p><code>2020-06-30</code>: add details to <a href="#114"><span class="must-keyword"><strong>MUST</strong></span> use media type versioning</a></p>
+<p><code>2020-06-30</code>: add details to <a href="#114"><span class="must-keyword"><strong>MUST</strong></span> not use media type versioning</a></p>
 </li>
 <li>
 <p><code>2020-05-19</code>: new sections about DELETE with query parameters and <a href="#delete-with-body"><code>DELETE with body</code></a> in <a href="#148"><span class="must-keyword"><strong>MUST</strong></span> use HTTP methods correctly</a>.</p>
@@ -9836,7 +9849,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-03 00:47:57 UTC
+Last updated 2022-08-03 04:49:28 UTC
 </div>
 </div>
 </body>
