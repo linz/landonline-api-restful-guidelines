@@ -18,11 +18,11 @@
     },
     {
       "id": "#104",
-      "title": "MUST secure endpoints"
+      "title": "MUST secure endpoints ( Under Construction)"
     },
     {
       "id": "#105",
-      "title": "MUST define and assign permissions (scopes)"
+      "title": "MUST define and assign permissions (scopes) ( Under Construction)"
     },
     {
       "id": "#106",
@@ -462,7 +462,7 @@
     },
     {
       "id": "#225",
-      "title": "MUST follow naming convention for permissions (scopes)"
+      "title": "MUST follow naming convention for permissions (scopes) ( Under Construction)"
     },
     {
       "id": "#226",
