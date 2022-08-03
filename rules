@@ -457,12 +457,8 @@
       "title": "MUST use most specific HTTP status codes"
     },
     {
-      "id": "#223",
-      "title": "MUST-SHOULD use functional naming schema"
-    },
-    {
       "id": "#224",
-      "title": "MUST follow naming convention for hostnames"
+      "title": "MUST follow naming convention for hostnames ( Under Construction)"
     },
     {
       "id": "#225",
