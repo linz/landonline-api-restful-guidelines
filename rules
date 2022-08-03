@@ -214,11 +214,11 @@
     },
     {
       "id": "#157",
-      "title": "SHOULD support partial responses via filtering"
+      "title": "MAY support partial responses via filtering"
     },
     {
       "id": "#158",
-      "title": "SHOULD allow optional embedding of sub-resources"
+      "title": "MAY allow optional embedding of sub-resources"
     },
     {
       "id": "#159",

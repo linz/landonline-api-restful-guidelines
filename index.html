@@ -1544,8 +1544,8 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <ul class="sectlevel2">
 <li><a href="#155"><span class="should-keyword"><strong>SHOULD</strong></span> reduce bandwidth needs and improve responsiveness</a></li>
 <li><a href="#156"><span class="should-keyword"><strong>SHOULD</strong></span> use <code>gzip</code> compression</a></li>
-<li><a href="#157"><span class="should-keyword"><strong>SHOULD</strong></span> support partial responses via filtering</a></li>
-<li><a href="#158"><span class="should-keyword"><strong>SHOULD</strong></span> allow optional embedding of sub-resources</a></li>
+<li><a href="#157"><span class="may-keyword"><strong>MAY</strong></span> support partial responses via filtering</a></li>
+<li><a href="#158"><span class="may-keyword"><strong>MAY</strong></span> allow optional embedding of sub-resources</a></li>
 <li><a href="#227"><span class="must-keyword"><strong>MUST</strong></span> document cacheable <code>GET</code>, <code>HEAD</code>, and <code>POST</code> endpoints</a></li>
 </ul>
 </li>
@@ -3344,13 +3344,13 @@ with <code>+</code> (ascending) or <code>-</code> (descending), e.g. /sales-orde
 </li>
 <li>
 <p><a id="fields"></a><a href="#fields"><code>fields</code></a>: field name expression to retrieve only a subset of fields
-of a resource. See <a href="#157"><span class="should-keyword"><strong>SHOULD</strong></span> support partial responses via filtering</a> below.</p>
+of a resource. See <a href="#157"><span class="may-keyword"><strong>MAY</strong></span> support partial responses via filtering</a> below.</p>
 </li>
 <li>
 <p><a id="embed"></a><a href="#embed"><code>embed</code></a>: field name expression to expand or embedded sub-entities,
 e.g. inside of an article entity, expand silhouette code into the silhouette
 object. Implementing <a href="#embed"><code>embed</code></a> correctly is difficult, so do it with care.
-See <a href="#158"><span class="should-keyword"><strong>SHOULD</strong></span> allow optional embedding of sub-resources</a> below.</p>
+See <a href="#158"><span class="may-keyword"><strong>MAY</strong></span> allow optional embedding of sub-resources</a> below.</p>
 </li>
 <li>
 <p><a id="offset"></a><a href="#offset"><code>offset</code></a>: numeric offset of the first element provided on a page
@@ -6298,7 +6298,7 @@ this point.)</p>
 </li>
 <li>
 <p>querying field filters to retrieve a subset of resource attributes (see
-<a href="#157"><span class="should-keyword"><strong>SHOULD</strong></span> support partial responses via filtering</a> below)</p>
+<a href="#157"><span class="may-keyword"><strong>MAY</strong></span> support partial responses via filtering</a> below)</p>
 </li>
 <li>
 <p><a href="https://tools.ietf.org/html/rfc7232#section-2.3"><code>ETag</code></a> and <a href="https://tools.ietf.org/html/rfc7232#section-3.1"><code>If-Match</code></a>/<a href="https://tools.ietf.org/html/rfc7232#section-3.2"><code>If-None-Match</code></a> headers to avoid re-fetching of
@@ -6338,7 +6338,7 @@ via <a href="https://tools.ietf.org/html/rfc7231#section-5.3.4"><code>Accept-Enc
 </div>
 </div>
 <div class="sect2">
-<h3 id="157"><a class="link" href="#157"><span class="should-keyword"><strong>SHOULD</strong></span> support partial responses via filtering</a></h3>
+<h3 id="157"><a class="link" href="#157"><span class="may-keyword"><strong>MAY</strong></span> support partial responses via filtering</a></h3>
 <div class="paragraph">
 <p>Depending on your use case and payload size, you can significantly reduce
 network bandwidth need by supporting filtering of returned entity fields.
@@ -6432,7 +6432,7 @@ anticipated by the consumer.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="158"><a class="link" href="#158"><span class="should-keyword"><strong>SHOULD</strong></span> allow optional embedding of sub-resources</a></h3>
+<h3 id="158"><a class="link" href="#158"><span class="may-keyword"><strong>MAY</strong></span> allow optional embedding of sub-resources</a></h3>
 <div class="paragraph">
 <p>Embedding related resources (also know as <em>Resource expansion</em>) is a
 great way to reduce the number of requests. In cases where clients know
@@ -9836,7 +9836,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-03 00:24:43 UTC
+Last updated 2022-08-03 00:47:57 UTC
 </div>
 </div>
 </body>
