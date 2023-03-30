@@ -2435,6 +2435,9 @@ also <a href="#105"><span class="must-keyword"><strong>MUST</strong></span> defi
   - <span class="string"><span class="content">BearerAuth: [ linz-domains:full ]</span></span></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p><strong>Note:</strong> Bearer, actually doesn&#8217;t allow us to define scopes: See  <a href="https://swagger.io/docs/specification/authentication/bearer-authentication/">Bearer authentication</a>. Ideally we would use OAuth2, or OIDC type; However, a bug with Tyk gateway Integration means, that we either need to specify it this way, or mutate the OpenAPI specification before being uploaded into Tyk.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="105"><a class="link" href="#105"><span class="must-keyword"><strong>MUST</strong></span> define and assign permissions (scopes)</a></h3>

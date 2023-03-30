@@ -34,6 +34,8 @@ security:
   - BearerAuth: [ linz-domains:full ]
 ----
 
+*Note:* Bearer, actually doesn't allow us to define scopes: See  https://swagger.io/docs/specification/authentication/bearer-authentication/[Bearer authentication]. Ideally we would use OAuth2, or OIDC type; However, a bug with Tyk gateway Integration means, that we either need to specify it this way, or mutate the OpenAPI specification before being uploaded into Tyk.
+
 [#105]
 == {MUST} define and assign permissions (scopes)
 
