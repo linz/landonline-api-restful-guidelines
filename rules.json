@@ -126,7 +126,7 @@
     },
     {
       "id": "#135",
-      "title": "MAY use /api as base path - (Restore once gateway is in)"
+      "title": "SHOULD not use /api as base path"
     },
     {
       "id": "#136",
