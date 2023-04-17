@@ -240,7 +240,7 @@ x-gateway-upstream-targets:
 == {MUST} provide server url
 
 Configure the API gateway server url for your resource, ensure variable are configured if templating.
-URL is dependent on audience, external-public should be have public prepended. i.e. public.api.
+URL is dependent on audience, external-public must have public prepended. i.e. public.api.
 
 [source,yaml]
 ----
