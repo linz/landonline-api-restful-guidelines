@@ -1458,7 +1458,6 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#urls">7. REST Basics - URLs</a>
 <ul class="sectlevel2">
 <li><a href="#135"><span class="should-keyword"><strong>SHOULD</strong></span> not use /api as base path</a></li>
-<li><a href="#134"><span class="must-keyword"><strong>MUST</strong></span> pluralize resource names</a></li>
 <li><a href="#228"><span class="must-keyword"><strong>MUST</strong></span> use URL-friendly resource identifiers</a></li>
 <li><a href="#129"><span class="must-keyword"><strong>MUST</strong></span> use kebab-case for path segments</a></li>
 <li><a href="#136"><span class="must-keyword"><strong>MUST</strong></span> use normalized paths without empty path segments and trailing slashes</a></li>
@@ -2430,8 +2429,18 @@ the target audience — even if this creates redundancies
 <div class="sect2">
 <h3 id="252"><a class="link" href="#252"><span class="must-keyword"><strong>MUST</strong></span> provide server url</a></h3>
 <div class="paragraph">
-<p>Configure the API gateway server url for your resource, ensure variable are configured if templating.
+<p>Configure the API gateway server url for your resource, ensure variables are configured if templating.
 URL is dependent on audience, external-public must have public prepended. i.e. public.api.</p>
+</div>
+<div class="paragraph">
+<p>Usually, a pluralised collection of resource instances is provided at the end of the server URL. The special case of a <em>resource singleton</em> must
+be modeled as a collection with cardinality 1 including definition of
+<code>maxItems</code> = <code>minItems</code> = 1 for the returned <code>array</code> structure
+to make the cardinality constraint explicit.</p>
+</div>
+<div class="paragraph">
+<p><strong>Exception:</strong> the <em>pseudo identifier</em> <code>self</code> used to specify a resource endpoint
+where the resource identifier is provided by authorization information (see <a href="#143"><span class="must-keyword"><strong>MUST</strong></span> identify resources and sub-resources via path segments</a>).</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2451,8 +2460,8 @@ URL is dependent on audience, external-public must have public prepended. i.e. p
   <span class="key">x-audience</span>: <span class="string"><span class="content">company-internal</span></span>
   <span class="key">title</span>: <span class="string"><span class="content">Parcel Helper Service API</span></span>
 <span class="key">servers</span>:
-  - <span class="string"><span class="content">url: &quot;https://api.landonline.govt.nz/v12/myresource&quot;</span></span>
-  - <span class="string"><span class="content">url: &quot;https://api{env}.landonline.govt.nz/v12/myresource&quot;</span></span>
+  - <span class="string"><span class="content">url: &quot;https://api.landonline.govt.nz/v12/myresources&quot;</span></span>
+  - <span class="string"><span class="content">url: &quot;https://api{env}.landonline.govt.nz/v12/myresources&quot;</span></span>
     <span class="key">variables</span>:
       <span class="key">env</span>:
         <span class="key">enum</span>:
@@ -2996,20 +3005,6 @@ you to maintain two different API specifications and provide
 <p>We see API&#8217;s base path as a part of deployment variant configuration.
 Therefore, this information has to be declared in the
 <a href="https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#server-object">server object</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="134"><a class="link" href="#134"><span class="must-keyword"><strong>MUST</strong></span> pluralize resource names</a></h3>
-<div class="paragraph">
-<p>Usually, a collection of resource instances is provided (at least the API
-should be ready here). The special case of a <em>resource singleton</em> must
-be modeled as a collection with cardinality 1 including definition of
-<code>maxItems</code> = <code>minItems</code> = 1 for the returned <code>array</code> structure
-to make the cardinality constraint explicit.</p>
-</div>
-<div class="paragraph">
-<p><strong>Exception:</strong> the <em>pseudo identifier</em> <code>self</code> used to specify a resource endpoint
-where the resource identifier is provided by authorization information (see <a href="#143"><span class="must-keyword"><strong>MUST</strong></span> identify resources and sub-resources via path segments</a>).</p>
 </div>
 </div>
 <div class="sect2">
@@ -9578,7 +9573,7 @@ to see a list of all changes.</p>
 <p><code>2020-08-25</code>: change <a href="#240"><span class="should-keyword"><strong>SHOULD</strong></span> declare enum values using UPPER_SNAKE_CASE string</a> from <span class="must-keyword"><strong>MUST</strong></span> to <span class="should-keyword"><strong>SHOULD</strong></span>, explain exceptions</p>
 </li>
 <li>
-<p><code>2020-08-25</code>: add exception for <code>self</code> to <a href="#143"><span class="must-keyword"><strong>MUST</strong></span> identify resources and sub-resources via path segments</a> and <a href="#134"><span class="must-keyword"><strong>MUST</strong></span> pluralize resource names</a>.</p>
+<p><code>2020-08-25</code>: add exception for <code>self</code> to <a href="#143"><span class="must-keyword"><strong>MUST</strong></span> identify resources and sub-resources via path segments</a>.</p>
 </li>
 <li>
 <p><code>2020-08-24</code>: change "<span class="must-keyword"><strong>MUST</strong></span> avoid trailing slashes" to <a href="#136"><span class="must-keyword"><strong>MUST</strong></span> use normalized paths without empty path segments and trailing slashes</a>.</p>
@@ -9880,7 +9875,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-17 03:45:20 UTC
+Last updated 2023-05-03 23:40:12 UTC
 </div>
 </div>
 </body>

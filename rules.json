@@ -121,10 +121,6 @@
       "title": "MAY use standard headers"
     },
     {
-      "id": "#134",
-      "title": "MUST pluralize resource names"
-    },
-    {
       "id": "#135",
       "title": "SHOULD not use /api as base path"
     },
