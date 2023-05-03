@@ -39,7 +39,7 @@ to see a list of all changes.
 * `2020-09-29`: include models for headers to be included by reference in API definitions (<<183>>)
 * `2020-09-08`: add exception for legacy host names to <<224>>
 * `2020-08-25`: change <<240>> from {MUST} to {SHOULD}, explain exceptions
-* `2020-08-25`: add exception for `self` to <<143>> and <<134>>.
+* `2020-08-25`: add exception for `self` to <<143>>.
 * `2020-08-24`: change "{MUST} avoid trailing slashes" to <<136>>.
 * `2020-08-20`: change <<183>> from {MUST} to {SHOULD}, mention gateway-specific headers (which are not part of the public API).
 * `2020-06-30`: add details to <<114>>

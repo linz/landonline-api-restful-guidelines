@@ -239,8 +239,16 @@ x-gateway-upstream-targets:
 [#252]
 == {MUST} provide server url
 
-Configure the API gateway server url for your resource, ensure variable are configured if templating.
+Configure the API gateway server url for your resource, ensure variables are configured if templating.
 URL is dependent on audience, external-public must have public prepended. i.e. public.api.
+
+Usually, a pluralised collection of resource instances is provided at the end of the server URL. The special case of a _resource singleton_ must
+be modeled as a collection with cardinality 1 including definition of
+`maxItems` = `minItems` = 1 for the returned `array` structure
+to make the cardinality constraint explicit.
+
+**Exception:** the _pseudo identifier_ `self` used to specify a resource endpoint
+where the resource identifier is provided by authorization information (see <<143>>).
 
 [source,yaml]
 ----
@@ -259,8 +267,8 @@ info:
   x-audience: company-internal
   title: Parcel Helper Service API
 servers:
-  - url: "https://api.landonline.govt.nz/v12/myresource"
-  - url: "https://api{env}.landonline.govt.nz/v12/myresource"
+  - url: "https://api.landonline.govt.nz/v12/myresources"
+  - url: "https://api{env}.landonline.govt.nz/v12/myresources"
     variables:
       env:
         enum:
