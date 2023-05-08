@@ -2400,6 +2400,13 @@ the target audience — even if this creates redundancies
 <div class="paragraph">
 <p>Configure the API gateway upstream target i.e. API Provider. Specify one for each environment.</p>
 </div>
+<div class="paragraph">
+<p>Three environments need to be defined.
+<strong>dev</strong>, <strong>preprod</strong> and <strong>prod</strong>.</p>
+</div>
+<div class="paragraph">
+<p>These environments are aligned with the enterprise domain naming, so you can consider <strong>nonprod</strong> and <strong>preprod</strong> in step to relate to <strong>dev</strong> and <strong>env</strong> in <em>enterprise</em> respectively.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">/x-gateway-upstream-targets</span>:
