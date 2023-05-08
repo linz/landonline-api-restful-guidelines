@@ -212,6 +212,11 @@ x-audience and hostnames are intricately linked. More to come.
 
 Configure the API gateway upstream target i.e. API Provider. Specify one for each environment.
 
+Three environments need to be defined.
+*dev*, *preprod* and *prod*.
+
+These environments are aligned with the enterprise domain naming, so you can consider *nonprod* and *preprod* in step to relate to *dev* and *env* in _enterprise_ respectively.
+
 [source,yaml]
 ----
 /x-gateway-upstream-targets:
@@ -231,7 +236,7 @@ info:
 x-gateway-upstream-targets:
     prod: http://httpbin.org/
     dev: http://httpbin.org/
-    preprod: http://httpbin.org/
+    env: http://httpbin.org/
 
 <...>
 ----
