@@ -3728,8 +3728,8 @@ support common understanding for API consumers.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a id="id"></a><a href="#id"><code>id</code></a>: the identity of the object. If used, IDs must be opaque strings
-and not numbers. IDs are unique within some documented context, are stable
+<p><a id="id"></a><a href="#id"><code>id</code></a>: the identity of the object. If used, IDs may be opaque strings
+or numbers. IDs are unique within some documented context, are stable
 and don&#8217;t change for a given object once assigned, and are never recycled
 cross entities.</p>
 </li>
@@ -3738,11 +3738,7 @@ cross entities.</p>
 another object must use a name that corresponds to the type of the referenced
 object or the relationship to the referenced object followed by <code>_id</code> (e.g.
 <code>partner_id</code> not <code>partner_number</code>, or <code>parent_node_id</code> for the reference to a parent
-node from a child node, even if both have the type <code>Node</code>).
-<strong>Exception</strong>: We use <code>customer_number</code> instead of <code>customer_id</code> for customer facing
-identification of customers due to legacy reasons. (Hint: <code>customer_id</code> used to be defined
-as internal only, technical integer key, see
-<a href="https://apis.zalando.net/redirect/5675b6ec-8934-11ea-929e-68f728c1ba70">Naming Decision: <code>customer_number</code> vs <code>customer_id</code> [internal_link</a>]).</p>
+node from a child node, even if both have the type <code>Node</code>).</p>
 </li>
 <li>
 <p><a id="etag"></a><a href="https://tools.ietf.org/html/rfc7232#section-2.3"><code>ETag</code></a>: the <a href="#182">ETag</a> of an <a href="#158">embedded sub-resource</a>. It
@@ -9882,7 +9878,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-08 03:07:13 UTC
+Last updated 2023-05-08 21:14:39 UTC
 </div>
 </div>
 </body>
