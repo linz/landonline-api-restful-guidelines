@@ -2400,6 +2400,13 @@ the target audience — even if this creates redundancies
 <div class="paragraph">
 <p>Configure the API gateway upstream target i.e. API Provider. Specify one for each environment.</p>
 </div>
+<div class="paragraph">
+<p>Three environments need to be defined.
+<strong>dev</strong>, <strong>preprod</strong> and <strong>prod</strong>.</p>
+</div>
+<div class="paragraph">
+<p>These environments are aligned with the enterprise domain naming, so you can consider <strong>nonprod</strong> and <strong>preprod</strong> in step to relate to <strong>dev</strong> and <strong>env</strong> in <em>enterprise</em> respectively.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">/x-gateway-upstream-targets</span>:
@@ -2420,7 +2427,7 @@ the target audience — even if this creates redundancies
 <span class="key">x-gateway-upstream-targets</span>:
     <span class="key">prod</span>: <span class="string"><span class="content">http://httpbin.org/</span></span>
     <span class="key">dev</span>: <span class="string"><span class="content">http://httpbin.org/</span></span>
-    <span class="key">preprod</span>: <span class="string"><span class="content">http://httpbin.org/</span></span>
+    <span class="key">env</span>: <span class="string"><span class="content">http://httpbin.org/</span></span>
 
 <span class="error">&lt;...&gt;</span></code></pre>
 </div>
@@ -9875,7 +9882,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-03 23:40:12 UTC
+Last updated 2023-05-08 03:07:13 UTC
 </div>
 </div>
 </body>
