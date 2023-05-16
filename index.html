@@ -2584,12 +2584,6 @@ You <strong>must</strong> use these formats, whenever applicable:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>772107100456824</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>integer</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bigint</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">arbitrarily large signed integer number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>77210710045682438959</code></p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>float</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>binary32</code> single precision decimal number&#8201;&#8212;&#8201;see <a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754-2008/ISO 60559:2011</a></p></td>
@@ -2600,12 +2594,6 @@ You <strong>must</strong> use these formats, whenever applicable:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>double</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>binary64</code> double precision decimal number&#8201;&#8212;&#8201;see <a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754-2008/ISO 60559:2011</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.141592653589793</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>decimal</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">arbitrarily precise signed decimal number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.141592653589793238462643383279</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
@@ -2811,16 +2799,16 @@ and everyone is encouraged to propose additions.</p>
 <div class="sect2">
 <h3 id="171"><a class="link" href="#171"><span class="must-keyword"><strong>MUST</strong></span> define a format for number and integer types</a></h3>
 <div class="paragraph">
-<p>In <a href="#238"><span class="must-keyword"><strong>MUST</strong></span> use standard data formats</a> we added <code>bigint</code> and <code>decimal</code> to the OpenAPI defined formats.
-As an implication, you must always provide one of the formats <code>int32</code>, <code>int64</code>, <code>bigint</code>
-or <code>float</code>, <code>double</code>, <code>decimal</code> when you define an API property of
+<p>You must always provide one of the formats <code>int32</code>, <code>int64</code>,
+or <code>float</code>, <code>double</code>,  when you define an API property of
 JSON type <code>number</code> or <code>integer</code>.</p>
 </div>
 <div class="paragraph">
-<p>By this we prevent clients from guessing the precision incorrectly, and thereby
-changing the value unintentionally. The precision must be translated by clients
-and servers into the most specific language types; in Java, for instance, the <code>number</code>
-type with <code>decimal</code> format will translate into <code>BigDecimal</code> and <code>integer</code> type with
+<p>However we have removed bigint from integer and decimal types as accepted formats, in these instances, there could be some incorrect guessing of the precision.</p>
+</div>
+<div class="paragraph">
+<p>e.g. specific language types; in Java, for instance, the <code>number</code>
+type with <code>decimal</code> format would normally have been translated into <code>BigDecimal</code>, this is now unclear, <code>integer</code> type with
 <code>int32</code> format will translate to <code>int</code> or <code>Integer</code> Java types.</p>
 </div>
 <div class="sect3">
@@ -9878,7 +9866,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-08 21:14:39 UTC
+Last updated 2023-05-16 01:50:35 UTC
 </div>
 </div>
 </body>
