@@ -19,9 +19,6 @@ Following OpenAPI extension properties *must* be provided in addition:
 - `#/info/x-audience` intended target audience of the API (<<219, see rule 219>>)
 
 
-Following OpenAPI extension for the API Gateway properties *may* be provided in addition:
-- `#/info/x-gateway-strip-listen-path` intended target audience of the API (<<219, see rule 219>>)
-
 
 [#116]
 == {MUST} use semantic versioning
@@ -173,33 +170,6 @@ info:
 
 For details and more information on audience groups see the
 {api-audience-narrative}[API Audience narrative (internal_link)].
-
-[#250]
-== {MAY} strip gateway listen path
-
-Defaults to false if omitted.
-
-If this setting is checked, then the API Gateway will remove the listen path from the inbound URL so that it does not interfere with routing upstream.
-
-[source,yaml]
-----
-/x-gateway-strip-listen-path:
-  type: boolean
-  description: |
-    If this setting is checked, then the API Gateway will remove the above listen path from the inbound URL so that it does not interfere with routing upstream.
-----
-
-Example:
-
-[source,yaml]
-----
-openapi: 3.0.1
-info:
-  x-audience: company-internal
-  title: Parcel Helper Service API
-x-gateway-strip-listen-path: true
-<...>
-----
 
 
 [#224]
