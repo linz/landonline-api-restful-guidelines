@@ -553,10 +553,6 @@
       "title": "MUST use the common address fields"
     },
     {
-      "id": "#250",
-      "title": "MAY strip gateway listen path"
-    },
-    {
       "id": "#251",
       "title": "MUST provide gateway upstream targets"
     },

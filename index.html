@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="keywords" content="Zalando, Guidelines, RESTful, API, Events, Schema">
 <meta name="copyright" content="CC-BY-SA 4.0">
 <title>Linz Step RESTful API and Event Guidelines</title>
@@ -1432,7 +1432,6 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#116"><span class="must-keyword"><strong>MUST</strong></span> use semantic versioning</a></li>
 <li><a href="#215"><span class="must-keyword"><strong>MUST</strong></span> provide API identifiers</a></li>
 <li><a href="#219"><span class="must-keyword"><strong>MUST</strong></span> provide API audience</a></li>
-<li><a href="#250"><span class="may-keyword"><strong>MAY</strong></span> strip gateway listen path</a></li>
 <li><a href="#224"><span class="must-keyword"><strong>MUST</strong></span> follow naming convention for hostnames ( Under Construction)</a></li>
 <li><a href="#251"><span class="must-keyword"><strong>MUST</strong></span> provide gateway upstream targets</a></li>
 <li><a href="#252"><span class="must-keyword"><strong>MUST</strong></span> provide server url</a></li>
@@ -2165,10 +2164,6 @@ to allow for API management:</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Following OpenAPI extension for the API Gateway properties <strong>may</strong> be provided in addition:
-- <code>#/info/x-gateway-strip-listen-path</code> intended target audience of the API (<a href="#219">see rule 219</a>)</p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="116"><a class="link" href="#116"><span class="must-keyword"><strong>MUST</strong></span> use semantic versioning</a></h3>
@@ -2357,36 +2352,6 @@ the target audience — even if this creates redundancies
 <div class="paragraph">
 <p>For details and more information on audience groups see the
 <a href="https://apis.zalando.net/redirect/85ee93a3-7a78-4461-8bf1-08ffdaebcd18">API Audience narrative (internal_link)</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="250"><a class="link" href="#250"><span class="may-keyword"><strong>MAY</strong></span> strip gateway listen path</a></h3>
-<div class="paragraph">
-<p>Defaults to false if omitted.</p>
-</div>
-<div class="paragraph">
-<p>If this setting is checked, then the API Gateway will remove the listen path from the inbound URL so that it does not interfere with routing upstream.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">/x-gateway-strip-listen-path</span>:
-  <span class="key">type</span>: <span class="string"><span class="content">boolean</span></span>
-  <span class="key">description</span>: <span class="string"><span class="delimiter">|</span><span class="content">
-    If this setting is checked, then the API Gateway will remove the above listen path from the inbound URL so that it does not interfere with routing upstream.</span></span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">openapi</span>: <span class="string"><span class="content">3.0.1</span></span>
-<span class="key">info</span>:
-  <span class="key">x-audience</span>: <span class="string"><span class="content">company-internal</span></span>
-  <span class="key">title</span>: <span class="string"><span class="content">Parcel Helper Service API</span></span>
-<span class="key">x-gateway-strip-listen-path</span>: <span class="string"><span class="content">true</span></span>
-<span class="error">&lt;...&gt;</span></code></pre>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -9866,7 +9831,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-16 01:50:35 UTC
+Last updated 2023-06-19 01:25:42 UTC
 </div>
 </div>
 </body>
