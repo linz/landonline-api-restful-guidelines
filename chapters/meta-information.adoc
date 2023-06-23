@@ -138,7 +138,7 @@ the OpenAPI specification and must conform to the following specification:
 ----
 /info/x-audience:
   type: string
-  x-extensible-enum:
+  enum:
     - component-internal
     - company-internal
     - external-public

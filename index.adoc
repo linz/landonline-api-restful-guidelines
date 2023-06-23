@@ -180,8 +180,6 @@
 :X-Mobile-Advertising-ID: pass:[<a href="#x-mobile-advertising-id"><code>X-Mobile-Advertising-ID</code></a>]
 :X-App-Domain: pass:[<a href="#x-app-domain"><code>X-App-Domain</code></a>]
 
-:x-extensible-enum: pass:[<a href="#112"><code>x-extensible-enum</code></a>]
-
 
 // Attributes to improve design and linking of common headers.
 :ETag: pass:[<a href="https://tools.ietf.org/html/rfc7232#section-2.3"><code>ETag</code></a>]
