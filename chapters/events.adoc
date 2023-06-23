@@ -125,7 +125,7 @@ EventType:
         customer-personal-data.email-changed.v2
     audience:
       type: string
-      x-extensible-enum:
+      enum:
         - component-internal
         - company-internal
         - external-partner
@@ -142,14 +142,14 @@ EventType:
     category:
       description: Defines the category of this EventType.
       type: string
-      x-extensible-enum:
+      enum:
         - data
         - general
     compatibility_mode:
       description: |
         The compatibility mode to evolve the schema.
       type: string
-      x-extensible-enum:
+      enum:
         - compatible
         - forward
         - none
@@ -174,7 +174,7 @@ EventType:
              json_schema (JSON Schema v04) syntax is defined, but in the
              future there could be others.
           type: string
-          x-extensible-enum:
+          enum:
             - json_schema
         schema:
           description: |
@@ -960,5 +960,4 @@ consumers -
 known as a tuple).
 * Adding a new optional field to redefine the meaning of an existing
 field (also known as a co-occurrence constraint).
-* Adding a value to an enumeration (note that <<112,`x-extensible-enum`>>
-is not available in JSON Schema)
+* Adding a value to an enumeration

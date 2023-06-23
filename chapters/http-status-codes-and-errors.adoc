@@ -292,10 +292,10 @@ BatchOrBulkResponse:
             type: string
           status:
             description: >
-              Response status value. A number or extensible enum describing
+              Response status value. A number or enum describing
               the execution status of the batch or bulk request items.
             type: string
-            x-extensible-enum: [...]
+            enum: [...]
           description:
             description: >
               Human readable status description and containing additional
