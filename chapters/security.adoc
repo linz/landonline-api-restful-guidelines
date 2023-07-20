@@ -24,34 +24,45 @@ components:
       bearerFormat: JWT
 ----
 
-The bearer security schema can than be applied to an API, e.g. requiring
-the token to have `linz-domains:full` scope for permission as follows (see
-also <<105>>):
-
-[source,yaml]
-----
-security:
-  - BearerAuth: [ linz-domains:full ]
-----
-
 [#105]
 == {MUST} define and assign permissions (scopes)
 
-We currently only use the linz-domains:full permission for company-internal and component-internal audiences. The
-external-public audience, doesn't need to define a scope.
+Every API must define and use security permissions, also known as "scopes". A scope is a way to limit the type of access that a client has to a particular resource or service. Scopes may be reused between API's if there is a logical service/boundary level (e.g., search, fees) or at just at an API level. (If in doubt check with Security)
 
-The defined permission is then assigned the whole API. If a single service needs to serve multiple audiences it is best to split into separate specifications See <<219, MUST provide audience>>.
+The format for scopes follows the regex pattern `[a-zA-Z\-]{4,15}:default`. This means the name of the scope should consist of 4 to 15 alphanumeric characters (or hyphens), followed by `:default`. The `:default` part indicates that these are the default permissions for the respective service.
+
+Scopes are defined as part of the security requirement object at the root level of your API definition, allowing for a default scope that applies to all operations within the API. Please note that currently, only the root security can be set in our system.
+
+Example:
 
 [source,yaml]
 ----
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 security:
-- BearerAuth: [ linz-domains:full ]
+- BearerAuth: [ 'search:default' ]
 paths:
   /registeredclients-only-information:
     get:
       summary: Provides information about ...
                Accessible by any user; permissions needed.
 ----
+
+In the above example, the default scope `search:default` is applied at the root level of the API, allowing access to search operations for any authenticated user.
+
+It's critical to understand that any new scope must be created/configured in the Identity Provider (IDP) before it can be used by a resource server. Also, the relevant clients must be registered to get that scope. This process is documented in https://github.com/linz/landonline-auth/blob/master/docs/how-to-add-new-client-scope.md.
+
+Remember that the resource owner squad holds the authority to approve a client registering to a scope. Therefore, always ensure their approval before proceeding with scope creation.
+
+For audiences like the external-public, there's no requirement to define a specific scope. If a single service needs to serve multiple audiences, it's often best to create separate API specifications to manage access control effectively. Refer to <<219, MUST provide audience>> for more details.
+
+
+
+
 
 
 
