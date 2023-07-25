@@ -1569,7 +1569,6 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#115"><span class="must-keyword"><strong>MUST</strong></span> use URL versioning</a></li>
 <li><a href="#114"><span class="must-keyword"><strong>MUST</strong></span> not use media type versioning</a></li>
 <li><a href="#110"><span class="must-keyword"><strong>MUST</strong></span> always return JSON objects as top-level data structures</a></li>
-<li><a href="#112"><span class="should-keyword"><strong>SHOULD</strong></span> used open-ended list of values (<code>x-extensible-enum</code>) for enumerations</a></li>
 </ul>
 </li>
 <li><a href="#deprecation">16. REST Design - Deprecation</a>
@@ -2317,7 +2316,7 @@ the OpenAPI specification and must conform to the following specification:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">/info/x-audience</span>:
   <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-  <span class="key">x-extensible-enum</span>:
+  <span class="key">enum</span>:
     - <span class="string"><span class="content">component-internal</span></span>
     - <span class="string"><span class="content">company-internal</span></span>
     - <span class="string"><span class="content">external-public</span></span>
@@ -2474,37 +2473,49 @@ The following code snippet shows how to define the bearer security scheme.</p>
       <span class="key">bearerFormat</span>: <span class="string"><span class="content">JWT</span></span></code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>The bearer security schema can than be applied to an API, e.g. requiring
-the token to have <code>linz-domains:full</code> scope for permission as follows (see
-also <a href="#105"><span class="must-keyword"><strong>MUST</strong></span> define and assign permissions (scopes)</a>):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">security</span>:
-  - <span class="string"><span class="content">BearerAuth: [ linz-domains:full ]</span></span></code></pre>
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="105"><a class="link" href="#105"><span class="must-keyword"><strong>MUST</strong></span> define and assign permissions (scopes)</a></h3>
 <div class="paragraph">
-<p>We currently only use the linz-domains:full permission for company-internal and component-internal audiences. The
-external-public audience, doesn&#8217;t need to define a scope.</p>
+<p>Every API must define and use security permissions, also known as "scopes". A scope is a way to limit the type of access that a client has to a particular resource or service. Scopes may be reused between API&#8217;s if there is a logical service/boundary level (e.g., search, fees) or at just at an API level. (If in doubt check with Security)</p>
 </div>
 <div class="paragraph">
-<p>The defined permission is then assigned the whole API. If a single service needs to serve multiple audiences it is best to split into separate specifications See <a href="#219">MUST provide audience</a>.</p>
+<p>The format for scopes follows the regex pattern <code>[a-zA-Z\-]{4,15}:default</code>. This means the name of the scope should consist of 4 to 15 alphanumeric characters (or hyphens), followed by <code>:default</code>. The <code>:default</code> part indicates that these are the default permissions for the respective service.</p>
+</div>
+<div class="paragraph">
+<p>Scopes are defined as part of the security requirement object at the root level of your API definition, allowing for a default scope that applies to all operations within the API. Please note that currently, only the root security can be set in our system.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">security</span>:
-- <span class="string"><span class="content">BearerAuth: [ linz-domains:full ]</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">components</span>:
+  <span class="key">securitySchemes</span>:
+    <span class="key">BearerAuth</span>:
+      <span class="key">type</span>: <span class="string"><span class="content">http</span></span>
+      <span class="key">scheme</span>: <span class="string"><span class="content">bearer</span></span>
+      <span class="key">bearerFormat</span>: <span class="string"><span class="content">JWT</span></span>
+<span class="key">security</span>:
+- <span class="string"><span class="content">BearerAuth: [ 'search:default' ]</span></span>
 <span class="key">paths</span>:
   <span class="key">/registeredclients-only-information</span>:
     <span class="key">get</span>:
       <span class="key">summary</span>: <span class="string"><span class="content">Provides information about ...</span><span class="content">
                Accessible by any user; permissions needed.</span></span></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>In the above example, the default scope <code>search:default</code> is applied at the root level of the API, allowing access to search operations for any authenticated user.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s critical to understand that any new scope must be created/configured in the Identity Provider (IDP) before it can be used by a resource server. Also, the relevant clients must be registered to get that scope. This process is documented in <a href="https://github.com/linz/landonline-auth/blob/master/docs/how-to-add-new-client-scope.md" class="bare">https://github.com/linz/landonline-auth/blob/master/docs/how-to-add-new-client-scope.md</a>.</p>
+</div>
+<div class="paragraph">
+<p>Remember that the resource owner squad holds the authority to approve a client registering to a scope. Therefore, always ensure their approval before proceeding with scope creation.</p>
+</div>
+<div class="paragraph">
+<p>For audiences like the external-public, there&#8217;s no requirement to define a specific scope. If a single service needs to serve multiple audiences, it&#8217;s often best to create separate API specifications to manage access control effectively. Refer to <a href="#219">MUST provide audience</a> for more details.</p>
 </div>
 </div>
 </div>
@@ -3472,7 +3483,7 @@ Typescript and Kotlin both of which use camelCasing, keeping these aligned is se
 <div class="paragraph">
 <p>Enumerations should be represented as <code>string</code> typed OpenAPI definitions of
 request parameters or model properties.
-Enum values (using <code>enum</code> or <a href="#112"><code>x-extensible-enum</code></a>) need to consistently use
+Enum values (using <code>enum</code>) need to consistently use
 the upper-snake case format, e.g. <code>VALUE</code> or <code>YET_ANOTHER_VALUE</code>.
 This approach allows to clearly distinguish values from properties or other elements.</p>
 </div>
@@ -5333,10 +5344,10 @@ batch failures anyway.</p>
             <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
           <span class="key">status</span>:
             <span class="key">description</span>: <span class="string"><span class="delimiter">&gt;</span><span class="content">
-              Response status value. A number or extensible enum describing
+              Response status value. A number or enum describing
               the execution status of the batch or bulk request items.</span></span>
             <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-            <span class="key">x-extensible-enum</span>: <span class="string"><span class="content">[...]</span></span>
+            <span class="key">enum</span>: <span class="string"><span class="content">[...]</span></span>
           <span class="key">description</span>:
             <span class="key">description</span>: <span class="string"><span class="delimiter">&gt;</span><span class="content">
               Human readable status description and containing additional
@@ -6998,11 +7009,6 @@ not be prepared to handle it. However, enum ranges can be extended when used
 for input parameters.</p>
 </li>
 <li>
-<p>Use <a href="#112"><code>x-extensible-enum</code></a>, if range is used for output parameters and likely to
-be extended with growing functionality. It defines an open list of explicit
-values and clients must be agnostic to new values.</p>
-</li>
-<li>
 <p>Support redirection in case an URL has to change <a href="#status-code-301" class="status-code">301</a> (Moved Permanently).</p>
 </li>
 </ul>
@@ -7095,10 +7101,6 @@ of response data:</p>
 <a href="http://martinfowler.com/bliki/TolerantReader.html">"TolerantReader"</a> post),
 i.e. ignore new fields but do not eliminate them from payload if needed for
 subsequent <a href="#put"><code>PUT</code></a> requests.</p>
-</li>
-<li>
-<p>Be prepared that <a href="#112"><code>x-extensible-enum</code></a> return parameter may deliver new values;
-either be agnostic or provide default behavior for unknown values.</p>
 </li>
 <li>
 <p>Be prepared to handle HTTP status codes not explicitly specified in endpoint
@@ -7344,56 +7346,6 @@ backwards compatibility. See <a href="#161"><span class="should-keyword"><strong
 <div class="paragraph">
 <p>Maps (see <a href="#216"><span class="should-keyword"><strong>SHOULD</strong></span> define maps using <code>additionalProperties</code></a>), even though technically objects, are also forbidden as top
 level data structures, since they don&#8217;t support compatible, future extensions.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="112"><a class="link" href="#112"><span class="should-keyword"><strong>SHOULD</strong></span> used open-ended list of values (<code>x-extensible-enum</code>) for enumerations</a></h3>
-<div class="paragraph">
-<p>Enumerations are per definition closed sets of values that are assumed to be
-complete and not intended for extension. This closed principle of enumerations
-imposes compatibility issues when an enumeration must be extended. To avoid
-these issues, we strongly recommend to use an open-ended list of values instead
-of an enumeration unless:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>the API has full control of the enumeration values, i.e. the list of values
-does not depend on any external tool or interface, and</p>
-</li>
-<li>
-<p>the list of values is complete with respect to any thinkable and unthinkable
-future feature.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>To specify an open-ended list of values use the marker <a href="#112"><code>x-extensible-enum</code></a> as
-follows:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">delivery_methods</span>:
-  <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-  <span class="key">x-extensible-enum</span>:
-    - <span class="string"><span class="content">PARCEL</span></span>
-    - <span class="string"><span class="content">LETTER</span></span>
-    - <span class="string"><span class="content">EMAIL</span></span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Note:</strong> <a href="#112"><code>x-extensible-enum</code></a> is not JSON Schema conform but will be ignored by
-most tools.</p>
-</div>
-<div class="paragraph">
-<p>See <a href="#240"><span class="should-keyword"><strong>SHOULD</strong></span> declare enum values using UPPER_SNAKE_CASE string</a> about enum value naming conventions.</p>
-</div>
-<div class="paragraph">
-<p><strong>Important:</strong> Clients must be prepared for extensions of enums returned with server responses, i.e.
-must implement a fallback / default behavior to handle unknown new enum values&#8201;&#8212;&#8201;see <a href="#108"><span class="must-keyword"><strong>MUST</strong></span> prepare clients to accept compatible API extensions</a>.
-API owners must take care to extend enums in a compatible way that does not change the
-semantics of already existing enum values, for instance, do not split an old enum value
-into two new enum values.</p>
 </div>
 </div>
 </div>
@@ -7727,7 +7679,7 @@ definition:</p>
         customer-personal-data.email-changed.v2</span></span>
     <span class="key">audience</span>:
       <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-      <span class="key">x-extensible-enum</span>:
+      <span class="key">enum</span>:
         - <span class="string"><span class="content">component-internal</span></span>
         - <span class="string"><span class="content">company-internal</span></span>
         - <span class="string"><span class="content">external-partner</span></span>
@@ -7744,14 +7696,14 @@ definition:</p>
     <span class="key">category</span>:
       <span class="key">description</span>: <span class="string"><span class="content">Defines the category of this EventType.</span></span>
       <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-      <span class="key">x-extensible-enum</span>:
+      <span class="key">enum</span>:
         - <span class="string"><span class="content">data</span></span>
         - <span class="string"><span class="content">general</span></span>
     <span class="key">compatibility_mode</span>:
       <span class="key">description</span>: <span class="string"><span class="delimiter">|</span><span class="content">
         The compatibility mode to evolve the schema.</span></span>
       <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-      <span class="key">x-extensible-enum</span>:
+      <span class="key">enum</span>:
         - <span class="string"><span class="content">compatible</span></span>
         - <span class="string"><span class="content">forward</span></span>
         - <span class="string"><span class="content">none</span></span>
@@ -7776,7 +7728,7 @@ definition:</p>
              json_schema (JSON Schema v04) syntax is defined, but in the
              future there could be others.</span></span>
           <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
-          <span class="key">x-extensible-enum</span>:
+          <span class="key">enum</span>:
             - <span class="string"><span class="content">json_schema</span></span>
         <span class="key">schema</span>:
           <span class="key">description</span>: <span class="string"><span class="delimiter">|</span><span class="content">
@@ -8783,8 +8735,7 @@ known as a tuple).</p>
 field (also known as a co-occurrence constraint).</p>
 </li>
 <li>
-<p>Adding a value to an enumeration (note that <a href="#112"><code>x-extensible-enum</code></a>
-is not available in JSON Schema)</p>
+<p>Adding a value to an enumeration</p>
 </li>
 </ul>
 </div>
@@ -9831,7 +9782,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-19 01:25:42 UTC
+Last updated 2023-07-25 23:23:38 UTC
 </div>
 </div>
 </body>
