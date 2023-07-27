@@ -2477,7 +2477,10 @@ The following code snippet shows how to define the bearer security scheme.</p>
 <div class="sect2">
 <h3 id="105"><a class="link" href="#105"><span class="must-keyword"><strong>MUST</strong></span> define and assign permissions (scopes)</a></h3>
 <div class="paragraph">
-<p>Every API must define and use security permissions, also known as "scopes". A scope is a way to limit the type of access that a client has to a particular resource or service. Scopes may be reused between API&#8217;s if there is a logical service/boundary level (e.g., search, fees) or at just at an API level. (If in doubt check with Security)</p>
+<p>At LINZ (STEP) every API must define and set security permissions, also known as "scopes" A decision was made that we would use resource based scopes, so this implies each resource MUST define at least one scope. A scope is a way to limit the type of access that a client has to a particular resource or service by the user who’s using the app. Scopes MAY be reused between API&#8217;s if there is a logical service/boundary level (e.g., search, fees) but at least one scope must be defined per resource. (If in doubt check with Security)</p>
+</div>
+<div class="paragraph">
+<p>As of the time of writing, only a single default scope is definable per API ( Resource )&#8201;&#8212;&#8201;(Kapua is in the progress of defing endpoint level scopes at what this means)</p>
 </div>
 <div class="paragraph">
 <p>The format for scopes follows the regex pattern <code>[a-zA-Z\-]{4,15}:default</code>. This means the name of the scope should consist of 4 to 15 alphanumeric characters (or hyphens), followed by <code>:default</code>. The <code>:default</code> part indicates that these are the default permissions for the respective service.</p>
@@ -2506,10 +2509,10 @@ The following code snippet shows how to define the bearer security scheme.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>In the above example, the default scope <code>search:default</code> is applied at the root level of the API, allowing access to search operations for any authenticated user.</p>
+<p>In the above example, the default scope <code>search:default</code> is applied at the root level of the API, allowing access to search operations for any client who has this scope on behalf of the user.</p>
 </div>
 <div class="paragraph">
-<p>It&#8217;s critical to understand that any new scope must be created/configured in the Identity Provider (IDP) before it can be used by a resource server. Also, the relevant clients must be registered to get that scope. This process is documented in <a href="https://github.com/linz/landonline-auth/blob/master/docs/how-to-add-new-client-scope.md" class="bare">https://github.com/linz/landonline-auth/blob/master/docs/how-to-add-new-client-scope.md</a>.</p>
+<p>It&#8217;s critical to understand that any new scope must be <a href="https://github.com/linz/landonline-auth/blob/master/docs/how-to-add-new-client-scope.md#adding-a-new-scope">created/configured in the Identity Provider (IDP)</a> before it can be used by a resource server. Also, the relevant clients must be registered to get that scope. This process is documented in <a href="https://github.com/linz/landonline-auth/blob/master/docs/how-to-add-new-client-scope.md">Granting client scope to a client</a>.</p>
 </div>
 <div class="paragraph">
 <p>Remember that the resource owner squad holds the authority to approve a client registering to a scope. Therefore, always ensure their approval before proceeding with scope creation.</p>
@@ -9782,7 +9785,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-25 23:23:38 UTC
+Last updated 2023-07-27 03:47:46 UTC
 </div>
 </div>
 </body>
