@@ -26,8 +26,10 @@ components:
 
 [#105]
 == {MUST} define and assign permissions (scopes)
+At LINZ (STEP) every API must define and set security permissions, also known as "scopes" A decision was made that we would use resource based scopes, so this implies each resource MUST define at least one scope. A scope is a way to limit the type of access that a client has to a particular resource or service by the user who’s using the app. Scopes MAY be reused between API's if there is a logical service/boundary level (e.g., search, fees) but at least one scope must be defined per resource. (If in doubt check with Security)
 
-Every API must define and use security permissions, also known as "scopes". A scope is a way to limit the type of access that a client has to a particular resource or service. Scopes may be reused between API's if there is a logical service/boundary level (e.g., search, fees) or at just at an API level. (If in doubt check with Security)
+As of the time of writing, only a single default scope is definable per API ( Resource ) -- (Kapua is in the progress of defing endpoint level scopes at what this means)
+
 
 The format for scopes follows the regex pattern `[a-zA-Z\-]{4,15}:default`. This means the name of the scope should consist of 4 to 15 alphanumeric characters (or hyphens), followed by `:default`. The `:default` part indicates that these are the default permissions for the respective service.
 
@@ -52,9 +54,9 @@ paths:
                Accessible by any user; permissions needed.
 ----
 
-In the above example, the default scope `search:default` is applied at the root level of the API, allowing access to search operations for any authenticated user.
+In the above example, the default scope `search:default` is applied at the root level of the API, allowing access to search operations for any client who has this scope on behalf of the user.
 
-It's critical to understand that any new scope must be created/configured in the Identity Provider (IDP) before it can be used by a resource server. Also, the relevant clients must be registered to get that scope. This process is documented in https://github.com/linz/landonline-auth/blob/master/docs/how-to-add-new-client-scope.md.
+It's critical to understand that any new scope must be https://github.com/linz/landonline-auth/blob/master/docs/how-to-add-new-client-scope.md#adding-a-new-scope[created/configured in the Identity Provider (IDP)] before it can be used by a resource server. Also, the relevant clients must be registered to get that scope. This process is documented in https://github.com/linz/landonline-auth/blob/master/docs/how-to-add-new-client-scope.md[Granting client scope to a client].
 
 Remember that the resource owner squad holds the authority to approve a client registering to a scope. Therefore, always ensure their approval before proceeding with scope creation.
 
