@@ -252,3 +252,112 @@ servers:
         default: .dev
 <...>
 ----
+
+[#253]
+== {MUST} follow the API endpoints design consideration
+
+We secure our endpoints through JWT token validation
+You can choose to have a single default scope for each of the endpoints for the resource (API) that you are exposing through the gateway.
+Or you can have a separate scope for an endpoint
+
+**Limitation with Tyk while validating for scopes at endpoint level**
+There is a limitation with Tyk while validating for scopes at endpoint level and we would need support from teams to work around that limitation
+Scope validation at endpoint level fails if we have two endpoints let’s say like below
+
+**/requests/v1/status** (GET)- protected by scope requests:read-status
+
+**/requests/v1/{requestId}** (GET) (where requestId is string) - protected by scope requests:get-request-details
+
+Now both these endpoints are protected by different scopes,
+but Tyk can’t correctly validate the scope in this case for the same **operation** and would allow access to **/requests/v1/status**
+even when the requests presents a JWT token with scope **requests:get-request-details**
+
+**Reason for that is:**
+
+Tyk uses regular expression in Go to validate a path against a scope but it doesn’t support a negative look-ahead.
+Basically, Tyk is not able to achieve this
+
+Allow access to **/any-string-value** but not **/status** for the token with a scope **requests:get-request-details**
+
+**Workaround:**
+
+So teams would have to be conscious to not have a string path parameter and another endpoint with a string in it at the same depth.
+
+[source,yaml]
+----
+/x-gateway-upstream-targets:
+  type: object
+  description: |
+     Mandatory extension used to determine upstream targets based on environment.
+----
+
+**Example of an invalid path combination:**
+
+[source,yaml]
+----
+openapi: 3.0.1
+info:
+  x-audience: company-internal
+  title: Parcel Helper Service API
+x-gateway-upstream-targets:
+  prod: 'http://httpbin.org/'
+  dev: 'http://httpbin.org/'
+  env: 'http://httpbin.org/'
+paths:
+  '/requests/status/{requestId}':
+    parameters:
+      - name: requestId
+        in: path
+        description: ID of anything to return
+        required: true
+        schema:
+          type: string
+    get:
+      security:
+        - BearerAuth:
+            - 'test:A'
+  /requests/status/astring:
+    get:
+      security:
+        - BearerAuth:
+            - 'test:B'
+<...>
+----
+
+**Example of valid path combinations:**
+
+[source,yaml]
+----
+openapi: 3.0.1
+info:
+  x-audience: company-internal
+  title: Parcel Helper Service API
+x-gateway-upstream-targets:
+  prod: 'http://httpbin.org/'
+  dev: 'http://httpbin.org/'
+  env: 'http://httpbin.org/'
+paths:
+  '/requests/status/{requestId}':
+    parameters:
+      - name: requestId
+        in: path
+        description: ID of anything to return
+        required: true
+        schema:
+          type: string
+    get:
+      security:
+        - BearerAuth:
+            - 'test:A'
+  /requests/status/anotherstring/astring:
+    get:
+      security:
+        - BearerAuth:
+            - 'test:B'
+  /requests/notstatus/astring:
+      get:
+        security:
+          - BearerAuth:
+              - 'test:C'
+<...>
+----
