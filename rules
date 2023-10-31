@@ -555,6 +555,10 @@
     {
       "id": "#252",
       "title": "MUST provide server url"
+    },
+    {
+      "id": "#253",
+      "title": "MUST follow the API endpoints design consideration"
     }
   ]
 }

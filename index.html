@@ -1435,6 +1435,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#224"><span class="must-keyword"><strong>MUST</strong></span> follow naming convention for hostnames ( Under Construction)</a></li>
 <li><a href="#251"><span class="must-keyword"><strong>MUST</strong></span> provide gateway upstream targets</a></li>
 <li><a href="#252"><span class="must-keyword"><strong>MUST</strong></span> provide server url</a></li>
+<li><a href="#253"><span class="must-keyword"><strong>MUST</strong></span> follow the API endpoints design consideration</a></li>
 </ul>
 </li>
 <li><a href="#security">5. REST Basics - Security</a>
@@ -2439,6 +2440,125 @@ where the resource identifier is provided by authorization information (see <a h
           - <span class="string"><span class="content">.dev</span></span>
           - <span class="string"><span class="content">.env</span></span>
         <span class="key">default</span>: <span class="string"><span class="content">.dev</span></span>
+<span class="error">&lt;...&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="253"><a class="link" href="#253"><span class="must-keyword"><strong>MUST</strong></span> follow the API endpoints design consideration</a></h3>
+<div class="paragraph">
+<p>We secure our endpoints through JWT token validation
+You can choose to have a single default scope for each of the endpoints for the resource (API) that you are exposing through the gateway.
+Or you can have a separate scope for an endpoint</p>
+</div>
+<div class="paragraph">
+<p><strong>Limitation with Tyk while validating for scopes at endpoint level</strong>
+There is a limitation with Tyk while validating for scopes at endpoint level and we would need support from teams to work around that limitation
+Scope validation at endpoint level fails if we have two endpoints let’s say like below</p>
+</div>
+<div class="paragraph">
+<p><strong>/requests/v1/status</strong> (GET)- protected by scope requests:read-status</p>
+</div>
+<div class="paragraph">
+<p><strong>/requests/v1/{requestId}</strong> (GET) (where requestId is string) - protected by scope requests:get-request-details</p>
+</div>
+<div class="paragraph">
+<p>Now both these endpoints are protected by different scopes,
+but Tyk can’t correctly validate the scope in this case for the same <strong>operation</strong> and would allow access to <strong>/requests/v1/status</strong>
+even when the requests presents a JWT token with scope <strong>requests:get-request-details</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Reason for that is:</strong></p>
+</div>
+<div class="paragraph">
+<p>Tyk uses regular expression in Go to validate a path against a scope but it doesn’t support a negative look-ahead.
+Basically, Tyk is not able to achieve this</p>
+</div>
+<div class="paragraph">
+<p>Allow access to <strong>/any-string-value</strong> but not <strong>/status</strong> for the token with a scope <strong>requests:get-request-details</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Workaround:</strong></p>
+</div>
+<div class="paragraph">
+<p>So teams would have to be conscious to not have a string path parameter and another endpoint with a string in it at the same depth.</p>
+</div>
+<div class="paragraph">
+<p><strong>Workarounds Options are</strong>
+ - Use an Integer based id, instead of a string
+ - Attempt to create a subresource at a separate depth
+ - Consider the subresource as a separate resource and hence a separate specification.</p>
+</div>
+<div class="paragraph">
+<p><strong>Example of an invalid path combination:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">openapi</span>: <span class="string"><span class="content">3.0.1</span></span>
+<span class="key">info</span>:
+  <span class="key">x-audience</span>: <span class="string"><span class="content">company-internal</span></span>
+  <span class="key">title</span>: <span class="string"><span class="content">Parcel Helper Service API</span></span>
+<span class="key">x-gateway-upstream-targets</span>:
+  <span class="key">prod</span>: <span class="string"><span class="content">'http://httpbin.org/'</span></span>
+  <span class="key">dev</span>: <span class="string"><span class="content">'http://httpbin.org/'</span></span>
+  <span class="key">env</span>: <span class="string"><span class="content">'http://httpbin.org/'</span></span>
+<span class="key">paths</span>:
+  <span class="key"><span class="delimiter">'</span><span class="content">/requests/status/{requestId}</span><span class="delimiter">'</span></span>:
+    <span class="key">parameters</span>:
+      - <span class="string"><span class="content">name: requestId</span></span>
+        <span class="key">in</span>: <span class="string"><span class="content">path</span></span>
+        <span class="key">description</span>: <span class="string"><span class="content">ID of anything to return</span></span>
+        <span class="key">required</span>: <span class="string"><span class="content">true</span></span>
+        <span class="key">schema</span>:
+          <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
+    <span class="key">get</span>:
+      <span class="key">security</span>:
+        - <span class="string"><span class="content">BearerAuth:</span><span class="content">
+            - 'test:A'</span></span>
+  <span class="key">/requests/status/astring</span>:
+    <span class="key">get</span>:
+      <span class="key">security</span>:
+        - <span class="string"><span class="content">BearerAuth:</span><span class="content">
+            - 'test:B'</span></span>
+<span class="error">&lt;...&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Example of valid path combinations:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">openapi</span>: <span class="string"><span class="content">3.0.1</span></span>
+<span class="key">info</span>:
+  <span class="key">x-audience</span>: <span class="string"><span class="content">company-internal</span></span>
+  <span class="key">title</span>: <span class="string"><span class="content">Parcel Helper Service API</span></span>
+<span class="key">x-gateway-upstream-targets</span>:
+  <span class="key">prod</span>: <span class="string"><span class="content">'http://httpbin.org/'</span></span>
+  <span class="key">dev</span>: <span class="string"><span class="content">'http://httpbin.org/'</span></span>
+  <span class="key">env</span>: <span class="string"><span class="content">'http://httpbin.org/'</span></span>
+<span class="key">paths</span>:
+  <span class="key"><span class="delimiter">'</span><span class="content">/requests/status/{requestId}</span><span class="delimiter">'</span></span>:
+    <span class="key">parameters</span>:
+      - <span class="string"><span class="content">name: requestId</span></span>
+        <span class="key">in</span>: <span class="string"><span class="content">path</span></span>
+        <span class="key">description</span>: <span class="string"><span class="content">ID of anything to return</span></span>
+        <span class="key">required</span>: <span class="string"><span class="content">true</span></span>
+        <span class="key">schema</span>:
+          <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
+    <span class="key">get</span>:
+      <span class="key">security</span>:
+        - <span class="string"><span class="content">BearerAuth:</span><span class="content">
+            - 'test:A'</span></span>
+  <span class="key">/requests/status/anotherstring/astring</span>:
+    <span class="key">get</span>:
+      <span class="key">security</span>:
+        - <span class="string"><span class="content">BearerAuth:</span><span class="content">
+            - 'test:B'</span></span>
+  <span class="key">/requests/notstatus/astring</span>:
+      <span class="key">get</span>:
+        <span class="key">security</span>:
+          - <span class="string"><span class="content">BearerAuth:</span><span class="content">
+              - 'test:C'</span></span>
 <span class="error">&lt;...&gt;</span></code></pre>
 </div>
 </div>
@@ -9785,7 +9905,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-27 03:47:46 UTC
+Last updated 2023-10-31 19:52:01 UTC
 </div>
 </div>
 </body>
