@@ -283,14 +283,6 @@ Allow access to **/any-string-value** but not **/status** for the token with a s
 
 So teams would have to be conscious to not have a string path parameter and another endpoint with a string in it at the same depth.
 
-[source,yaml]
-----
-/x-gateway-upstream-targets:
-  type: object
-  description: |
-     Mandatory extension used to determine upstream targets based on environment.
-----
-
 **Example of an invalid path combination:**
 
 [source,yaml]
