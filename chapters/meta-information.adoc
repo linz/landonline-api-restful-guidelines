@@ -284,9 +284,9 @@ Allow access to **/any-string-value** but not **/status** for the token with a s
 So teams would have to be conscious to not have a string path parameter and another endpoint with a string in it at the same depth.
 
 **Workarounds Options are**
- - Use an Integer based id, instead of a string
- - Attempt to create a subresource at a separate depth
- - Consider the subresource as a separate resource and hence a separate specification.
+  * Use an Integer based id, instead of a string
+  * Attempt to create a subresource at a separate depth
+  * Consider the subresource as a separate resource and hence a separate specification.
 
 **Example of an invalid path combination:**
 
