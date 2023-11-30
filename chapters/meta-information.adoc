@@ -178,21 +178,24 @@ For details and more information on audience groups see the
 x-audience and hostnames are intricately linked. More to come.
 
 [#251]
-== {MUST} provide gateway upstream targets
+== {MUST} Provide Gateway Upstream Targets
 
-Configure the API gateway upstream target i.e. API Provider. Specify one for each environment.
+Configure the API gateway upstream target, i.e., the API Provider. You must specify one upstream target for each environment: *dev*, *preprod*, and *prod*.
 
-Three environments need to be defined.
-*dev*, *preprod* and *prod*.
+These environments align with the enterprise domain naming conventions. For simplicity, consider *nonprod* and *preprod* in the step to relate to *dev* and *env* in the _enterprise_ respectively.
 
-These environments are aligned with the enterprise domain naming, so you can consider *nonprod* and *preprod* in step to relate to *dev* and *env* in _enterprise_ respectively.
+For each environment, the upstream target must adhere to specific URL patterns:
+- *prod* and *preprod* environments must use URLs matching the pattern `https://[subdomain].awsint.linz.govt.nz(/.*)?`, where `[subdomain]` represents the respective subdomain.
+- *dev* environment must use URLs matching either the pattern `https://httpbin.org(/.*)?`  or the internal subdomain pattern.
+
+**Note:** We acknowledge that because we promote design first, there is some likelihood when creating this document the upstream target is not necessarily known. You can use a subdomain placeholder until you have the final upstream target. e.g. https://placeholder.awsint.linz.govt.nz/
 
 [source,yaml]
 ----
 /x-gateway-upstream-targets:
   type: object
   description: |
-     Mandatory extension used to determine upstream targets based on environment.
+     Mandatory extension used to determine upstream targets based on the environment. Ensure that the URLs conform to the specified patterns for each environment.
 ----
 
 Example:
@@ -204,12 +207,13 @@ info:
   x-audience: company-internal
   title: Parcel Helper Service API
 x-gateway-upstream-targets:
-    prod: http://httpbin.org/
-    dev: http://httpbin.org/
-    env: http://httpbin.org/
+    prod: https://api.enablement.awsint.linz.govt.nz/
+    dev: https://httpbin.org/anything
+    env: https://api.preprod.enablement.awsint.linz.govt.nz/extra/path
 
 <...>
 ----
+
 
 [#252]
 == {MUST} provide server url
