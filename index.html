@@ -1433,7 +1433,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#215"><span class="must-keyword"><strong>MUST</strong></span> provide API identifiers</a></li>
 <li><a href="#219"><span class="must-keyword"><strong>MUST</strong></span> provide API audience</a></li>
 <li><a href="#224"><span class="must-keyword"><strong>MUST</strong></span> follow naming convention for hostnames ( Under Construction)</a></li>
-<li><a href="#251"><span class="must-keyword"><strong>MUST</strong></span> provide gateway upstream targets</a></li>
+<li><a href="#251"><span class="must-keyword"><strong>MUST</strong></span> Provide Gateway Upstream Targets</a></li>
 <li><a href="#252"><span class="must-keyword"><strong>MUST</strong></span> provide server url</a></li>
 <li><a href="#253"><span class="must-keyword"><strong>MUST</strong></span> follow the API endpoints design consideration</a></li>
 </ul>
@@ -2361,23 +2361,27 @@ the target audience — even if this creates redundancies
 </div>
 </div>
 <div class="sect2">
-<h3 id="251"><a class="link" href="#251"><span class="must-keyword"><strong>MUST</strong></span> provide gateway upstream targets</a></h3>
+<h3 id="251"><a class="link" href="#251"><span class="must-keyword"><strong>MUST</strong></span> Provide Gateway Upstream Targets</a></h3>
 <div class="paragraph">
-<p>Configure the API gateway upstream target i.e. API Provider. Specify one for each environment.</p>
+<p>Configure the API gateway upstream target, i.e., the API Provider. You must specify one upstream target for each environment: <strong>dev</strong>, <strong>preprod</strong>, and <strong>prod</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Three environments need to be defined.
-<strong>dev</strong>, <strong>preprod</strong> and <strong>prod</strong>.</p>
+<p>These environments align with the enterprise domain naming conventions. For simplicity, consider <strong>nonprod</strong> and <strong>preprod</strong> in the step to relate to <strong>dev</strong> and <strong>env</strong> in the <em>enterprise</em> respectively.</p>
 </div>
 <div class="paragraph">
-<p>These environments are aligned with the enterprise domain naming, so you can consider <strong>nonprod</strong> and <strong>preprod</strong> in step to relate to <strong>dev</strong> and <strong>env</strong> in <em>enterprise</em> respectively.</p>
+<p>For each environment, the upstream target must adhere to specific URL patterns:
+- <strong>prod</strong> and <strong>preprod</strong> environments must use URLs matching the pattern <code>https://[subdomain].awsint.linz.govt.nz(/.<strong>)?</code>, where <code>[subdomain]</code> represents the respective subdomain.
+- *dev</strong> environment must use URLs matching either the pattern <code><a href="https://httpbin.org(/.*" class="bare">https://httpbin.org(/.*</a>)?</code>  or the internal subdomain pattern.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> We acknowledge that because we promote design first, there is some likelihood when creating this document the upstream target is not necessarily known. You can use a subdomain placeholder until you have the final upstream target. e.g. <a href="https://placeholder.awsint.linz.govt.nz/" class="bare">https://placeholder.awsint.linz.govt.nz/</a></p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">/x-gateway-upstream-targets</span>:
   <span class="key">type</span>: <span class="string"><span class="content">object</span></span>
   <span class="key">description</span>: <span class="string"><span class="delimiter">|</span><span class="content">
-     Mandatory extension used to determine upstream targets based on environment.</span></span></code></pre>
+     Mandatory extension used to determine upstream targets based on the environment. Ensure that the URLs conform to the specified patterns for each environment.</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2390,9 +2394,9 @@ the target audience — even if this creates redundancies
   <span class="key">x-audience</span>: <span class="string"><span class="content">company-internal</span></span>
   <span class="key">title</span>: <span class="string"><span class="content">Parcel Helper Service API</span></span>
 <span class="key">x-gateway-upstream-targets</span>:
-    <span class="key">prod</span>: <span class="string"><span class="content">http://httpbin.org/</span></span>
-    <span class="key">dev</span>: <span class="string"><span class="content">http://httpbin.org/</span></span>
-    <span class="key">env</span>: <span class="string"><span class="content">http://httpbin.org/</span></span>
+    <span class="key">prod</span>: <span class="string"><span class="content">https://api.enablement.awsint.linz.govt.nz/</span></span>
+    <span class="key">dev</span>: <span class="string"><span class="content">https://httpbin.org/anything</span></span>
+    <span class="key">env</span>: <span class="string"><span class="content">https://api.preprod.enablement.awsint.linz.govt.nz/extra/path</span></span>
 
 <span class="error">&lt;...&gt;</span></code></pre>
 </div>
@@ -9905,7 +9909,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-31 20:11:59 UTC
+Last updated 2023-11-30 08:02:50 UTC
 </div>
 </div>
 </body>
