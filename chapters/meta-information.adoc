@@ -126,7 +126,7 @@ is deployed to in **Tyk Gateway**
   The API consumers with this audience are restricted to applications owned
   by Toitū Te Whenua Land Information New Zealand
 *external-public*::
-  APIs with this audience can be accessed by anyone with Internet access.
+  APIs with this audience can be accessed by anyone with Internet access(unauthenticated).
 
 *Note:* a smaller audience group is intentionally included in the wider group
 and thus does not need to be declared additionally.
