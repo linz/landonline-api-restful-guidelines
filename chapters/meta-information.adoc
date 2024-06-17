@@ -114,17 +114,15 @@ groups with clear organisational and legal boundaries:
 **Note**: sub-categorised as **internal**, **partner** and **public** this affects which subdomain deploy the API Proxy
 is deployed to in **Tyk Gateway**
 
-*component-internal*::
-  This is often referred to as a _team internal API_ or a _product internal API_.
-  The API consumers with this audience are restricted to applications of the
-  same *functional component* which typically represents a specific *product*
-  with clear functional scope and ownership.
-  All services of a functional component / product are owned by a specific dedicated owner
-  and engineering team(s). Typical examples of component-internal APIs are APIs
-  being used by internal helper and worker services or that support service operation.
+
 *company-internal*::
   The API consumers with this audience are restricted to applications owned
   by Toitū Te Whenua Land Information New Zealand
+*bff-internal*::
+  `Backend for front end` (BFF).
+  Used only when a single client connects to a single backend.
+
+  i.e. Only a single client can be assigned scopes to access the API.
 *external-public*::
   APIs with this audience can be accessed by anyone with Internet access(unauthenticated).
 
@@ -139,7 +137,7 @@ the OpenAPI specification and must conform to the following specification:
 /info/x-audience:
   type: string
   enum:
-    - component-internal
+    - bff-internal
     - company-internal
     - external-public
   description: |

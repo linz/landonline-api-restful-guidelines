@@ -17,8 +17,7 @@ You should follow the <<api-first, API First Principle>>, more specifically:
   for automated rule checks.
 * You must call for early review feedback from peers and client developers, and apply 
   {api-review-proc}[our lightweight API review process (internal_link)] 
-  for all component external APIs, i.e. all apis 
-  with `x-api-audience =/= component-internal` (see <<219>>).
+  for all APIs
 
 
 [#101]

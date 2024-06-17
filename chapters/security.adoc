@@ -2,7 +2,7 @@
 = REST Basics - Security
 
 Any non public API's must be secured; that is API's exposed via https://api.landonline.govt.nz/.
-This will be imply  <<219, x-audience>> has been set to company-internal or  component-internal and <<105, scopes are set correctly>>.
+This will be imply  <<219, x-audience>> has been set to company-internal or bff-internal and <<105, scopes are set correctly>>.
 
 [#104]
 == {MUST} secure API
