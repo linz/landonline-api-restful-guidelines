@@ -3098,9 +3098,6 @@ pagination use cases ordered along creation time.</p>
 <p>Namespacing should be avoided as it obscures the resource and can lead to the resource being improperly linked to a service where it doesn&#8217;t belong. For instance, a poor use of namespacing would be <code><a href="https://api.landonline.govt.nz/bookstore/v1/books" class="bare">https://api.landonline.govt.nz/bookstore/v1/books</a></code>. Here, "bookstore" acts as a namespace, which is unnecessary and can lead to confusion. The resource "books" is what should be directly accessible from the base URI.</p>
 </div>
 <div class="paragraph">
-<p>Adhering to this approach ensures your URIs remain clean and focused on resources, while still accommodating changes and evolution in your API. It also aligns with the principle of positioning the API as a resource at the root level, as the versioning information is not part of the resource&#8217;s URI.</p>
-</div>
-<div class="paragraph">
 <p>This rule does not applied to BFF&#8217;s which generally have a BFF name as a namespace as the basepath.</p>
 </div>
 <div class="ulist">
@@ -9925,7 +9922,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-18 00:47:35 UTC
+Last updated 2024-06-18 04:02:51 UTC
 </div>
 </div>
 </body>
