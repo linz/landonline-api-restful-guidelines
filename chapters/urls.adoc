@@ -12,8 +12,6 @@ Take, for example, an API for a bookstore. A root level resource could be "books
 
 Namespacing should be avoided as it obscures the resource and can lead to the resource being improperly linked to a service where it doesn't belong. For instance, a poor use of namespacing would be `https://api.landonline.govt.nz/bookstore/v1/books`. Here, "bookstore" acts as a namespace, which is unnecessary and can lead to confusion. The resource "books" is what should be directly accessible from the base URI.
 
-Adhering to this approach ensures your URIs remain clean and focused on resources, while still accommodating changes and evolution in your API. It also aligns with the principle of positioning the API as a resource at the root level, as the versioning information is not part of the resource's URI.
-
 This rule does not applied to BFF's which generally have a BFF name as a namespace as the basepath.
 
 - <<219>>
