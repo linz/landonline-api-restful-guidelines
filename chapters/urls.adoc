@@ -3,11 +3,29 @@
 
 Guidelines for naming and designing resource paths and query parameters.
 
+[#134]
+== {MUST} be a resource and not a namespace as the basepath.
+
+In the realm of RESTful API design, it's crucial to position a resource directly as the API's base URI. This setup allows a client to engage with a primary resource without the need for extra path segments. This strategy is in line with URI standards, fostering a clean and user-friendly URI structure that enhances both usability and maintainability.
+
+Take, for example, an API for a bookstore. A root level resource could be "books". The base URI of your API (e.g., `https://api.landonline.govt.nz/`) should grant access to this "books" resource. This is achieved accomplished by appending the resource name to the base URI (e.g., `https://api.landonline.govt.nz/v1/books`).
+
+Namespacing should be avoided as it obscures the resource and can lead to the resource being improperly linked to a service where it doesn't belong. For instance, a poor use of namespacing would be `https://api.landonline.govt.nz/bookstore/v1/books`. Here, "bookstore" acts as a namespace, which is unnecessary and can lead to confusion. The resource "books" is what should be directly accessible from the base URI.
+
+Adhering to this approach ensures your URIs remain clean and focused on resources, while still accommodating changes and evolution in your API. It also aligns with the principle of positioning the API as a resource at the root level, as the versioning information is not part of the resource's URI.
+
+This rule does not applied to BFF's which generally have a BFF name as a namespace as the basepath.
+
+- <<219>>
+
+See also
+
+- <<252>>
+
+- <<143>>
 
 [#135]
 == {SHOULD} not use /api as base path
-
-//== {SHOULD} not use /api as base path - Restore once gateway is in.
 
 In most cases, all resources provided by a service are part of the
 public API, and therefore should be made available under the root "/"
@@ -17,10 +35,6 @@ If the service should also support non-public, internal APIs
 — for specific operational support functions, for example — we encourage
 you to maintain two different API specifications and provide
 <<219, API audience>>. For both APIs, you should not use `/api` as base path.
-
-We see API's base path as a part of deployment variant configuration.
-Therefore, this information has to be declared in the
-https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#server-object[server object].
 
 
 [#228]

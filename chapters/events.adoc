@@ -126,9 +126,7 @@ EventType:
     audience:
       type: string
       enum:
-        - component-internal
         - company-internal
-        - external-partner
         - external-public
       description: |
         Intended target audience of the event type, analogue to audience definition for REST APIs
