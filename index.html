@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <meta name="keywords" content="Zalando, Guidelines, RESTful, API, Events, Schema">
 <meta name="copyright" content="CC-BY-SA 4.0">
 <title>Linz Step RESTful API and Event Guidelines</title>
@@ -1457,6 +1457,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </li>
 <li><a href="#urls">7. REST Basics - URLs</a>
 <ul class="sectlevel2">
+<li><a href="#134"><span class="must-keyword"><strong>MUST</strong></span> be a resource and not a namespace as the basepath.</a></li>
 <li><a href="#135"><span class="should-keyword"><strong>SHOULD</strong></span> not use /api as base path</a></li>
 <li><a href="#228"><span class="must-keyword"><strong>MUST</strong></span> use URL-friendly resource identifiers</a></li>
 <li><a href="#129"><span class="must-keyword"><strong>MUST</strong></span> use kebab-case for path segments</a></li>
@@ -1585,7 +1586,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </li>
 <li><a href="#api-operation">17. REST Operation</a>
 <ul class="sectlevel2">
-<li><a href="#192"><span class="must-keyword"><strong>MUST</strong></span> publish OpenAPI specification&#8201;&#8212;&#8201;(Under construction)</a></li>
+<li><a href="#192"><span class="must-keyword"><strong>MUST</strong></span> publish OpenAPI specification</a></li>
 <li><a href="#193"><span class="should-keyword"><strong>SHOULD</strong></span> monitor API usage</a></li>
 </ul>
 </li>
@@ -2003,8 +2004,7 @@ for automated rule checks.</p>
 <li>
 <p>You must call for early review feedback from peers and client developers, and apply
 <a href="https://api.docs.zalando.net/howto/request-review/">our lightweight API review process (internal_link)</a>
-for all component external APIs, i.e. all apis
-with <code>x-api-audience =/= component-internal</code> (see <a href="#219"><span class="must-keyword"><strong>MUST</strong></span> provide API audience</a>).</p>
+for all APIs</p>
 </li>
 </ul>
 </div>
@@ -2284,20 +2284,20 @@ is deployed to in <strong>Tyk Gateway</strong></p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><strong>component-internal</strong></dt>
-<dd>
-<p>This is often referred to as a <em>team internal API</em> or a <em>product internal API</em>.
-The API consumers with this audience are restricted to applications of the
-same <strong>functional component</strong> which typically represents a specific <strong>product</strong>
-with clear functional scope and ownership.
-All services of a functional component / product are owned by a specific dedicated owner
-and engineering team(s). Typical examples of component-internal APIs are APIs
-being used by internal helper and worker services or that support service operation.</p>
-</dd>
 <dt class="hdlist1"><strong>company-internal</strong></dt>
 <dd>
 <p>The API consumers with this audience are restricted to applications owned
 by Toitū Te Whenua Land Information New Zealand</p>
+</dd>
+<dt class="hdlist1"><strong>bff-internal</strong></dt>
+<dd>
+<p><code>Backend for front end</code> (BFF).
+Used only when a single client connects to a single backend.</p>
+<div class="literalblock">
+<div class="content">
+<pre>i.e. Only a single client can be assigned scopes to access the API.</pre>
+</div>
+</div>
 </dd>
 <dt class="hdlist1"><strong>external-public</strong></dt>
 <dd>
@@ -2318,7 +2318,7 @@ the OpenAPI specification and must conform to the following specification:</p>
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">/info/x-audience</span>:
   <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
   <span class="key">enum</span>:
-    - <span class="string"><span class="content">component-internal</span></span>
+    - <span class="string"><span class="content">bff-internal</span></span>
     - <span class="string"><span class="content">company-internal</span></span>
     - <span class="string"><span class="content">external-public</span></span>
   <span class="key">description</span>: <span class="string"><span class="delimiter">|</span><span class="content">
@@ -2574,7 +2574,7 @@ Basically, Tyk is not able to achieve this</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Any non public API&#8217;s must be secured; that is API&#8217;s exposed via <a href="https://api.landonline.govt.nz/" class="bare">https://api.landonline.govt.nz/</a>.
-This will be imply  <a href="#219">x-audience</a> has been set to company-internal or  component-internal and <a href="#105">scopes are set correctly</a>.</p>
+This will be imply  <a href="#219">x-audience</a> has been set to company-internal or bff-internal and <a href="#105">scopes are set correctly</a>.</p>
 </div>
 <div class="sect2">
 <h3 id="104"><a class="link" href="#104"><span class="must-keyword"><strong>MUST</strong></span> secure API</a></h3>
@@ -3087,6 +3087,44 @@ pagination use cases ordered along creation time.</p>
 <p>Guidelines for naming and designing resource paths and query parameters.</p>
 </div>
 <div class="sect2">
+<h3 id="134"><a class="link" href="#134"><span class="must-keyword"><strong>MUST</strong></span> be a resource and not a namespace as the basepath.</a></h3>
+<div class="paragraph">
+<p>In the realm of RESTful API design, it&#8217;s crucial to position a resource directly as the API&#8217;s base URI. This setup allows a client to engage with a primary resource without the need for extra path segments. This strategy is in line with URI standards, fostering a clean and user-friendly URI structure that enhances both usability and maintainability.</p>
+</div>
+<div class="paragraph">
+<p>Take, for example, an API for a bookstore. A root level resource could be "books". The base URI of your API (e.g., <code><a href="https://api.landonline.govt.nz/" class="bare">https://api.landonline.govt.nz/</a></code>) should grant access to this "books" resource. This is achieved accomplished by appending the resource name to the base URI (e.g., <code><a href="https://api.landonline.govt.nz/v1/books" class="bare">https://api.landonline.govt.nz/v1/books</a></code>).</p>
+</div>
+<div class="paragraph">
+<p>Namespacing should be avoided as it obscures the resource and can lead to the resource being improperly linked to a service where it doesn&#8217;t belong. For instance, a poor use of namespacing would be <code><a href="https://api.landonline.govt.nz/bookstore/v1/books" class="bare">https://api.landonline.govt.nz/bookstore/v1/books</a></code>. Here, "bookstore" acts as a namespace, which is unnecessary and can lead to confusion. The resource "books" is what should be directly accessible from the base URI.</p>
+</div>
+<div class="paragraph">
+<p>Adhering to this approach ensures your URIs remain clean and focused on resources, while still accommodating changes and evolution in your API. It also aligns with the principle of positioning the API as a resource at the root level, as the versioning information is not part of the resource&#8217;s URI.</p>
+</div>
+<div class="paragraph">
+<p>This rule does not applied to BFF&#8217;s which generally have a BFF name as a namespace as the basepath.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#219"><span class="must-keyword"><strong>MUST</strong></span> provide API audience</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>See also</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#252"><span class="must-keyword"><strong>MUST</strong></span> provide server url</a></p>
+</li>
+<li>
+<p><a href="#143"><span class="must-keyword"><strong>MUST</strong></span> identify resources and sub-resources via path segments</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
 <h3 id="135"><a class="link" href="#135"><span class="should-keyword"><strong>SHOULD</strong></span> not use /api as base path</a></h3>
 <div class="paragraph">
 <p>In most cases, all resources provided by a service are part of the
@@ -3098,11 +3136,6 @@ base path.</p>
 — for specific operational support functions, for example — we encourage
 you to maintain two different API specifications and provide
 <a href="#219">API audience</a>. For both APIs, you should not use <code>/api</code> as base path.</p>
-</div>
-<div class="paragraph">
-<p>We see API&#8217;s base path as a part of deployment variant configuration.
-Therefore, this information has to be declared in the
-<a href="https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#server-object">server object</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -7602,33 +7635,18 @@ the deprecation info (see hint in <a href="#189"><span class="should-keyword"><s
 <h2 id="api-operation"><a class="link" href="#api-operation">17. REST Operation</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="192"><a class="link" href="#192"><span class="must-keyword"><strong>MUST</strong></span> publish OpenAPI specification&#8201;&#8212;&#8201;(Under construction)</a></h3>
+<h3 id="192"><a class="link" href="#192"><span class="must-keyword"><strong>MUST</strong></span> publish OpenAPI specification</a></h3>
 <div class="paragraph">
-<p>All service applications must publish OpenAPI specifications of their external
-APIs. While this is optional for internal APIs, i.e. APIs marked with the
-<strong>component-internal</strong> <a href="#219">API audience</a> group, we still recommend to do so
-to profit from the API management infrastructure.</p>
+<p>All service applications must publish OpenAPI specifications of their
+APIs.</p>
 </div>
 <div class="paragraph">
-<p>An API is published by copying its <strong>OpenAPI specification</strong> into the reserved
-<strong>/linz-apis</strong> directory of the <strong>deployment artifact</strong> used to deploy the
-provisioning service. The directory must only contain <strong>self-contained YAML</strong>
-<strong>files</strong> that each describe one API (exception see <a href="#234"><span class="must-keyword"><strong>MUST</strong></span> only use durable and immutable remote references</a>). We prefer this
-deployment artifact-based method over the past (now legacy)
-<code>.well-known/schema-discovery</code> service endpoint-based publishing process, that
-we only support for backward compatibility reasons.</p>
+<p>An API is published post deployment to the gateway as part of common-cd-oas of the <strong>release bundle artifact</strong>.
+This will be a <strong>self-contained YAML</strong>
+<strong>files</strong> that each describe one API.</p>
 </div>
 <div class="paragraph">
-<p>Background: In our dynamic and complex service infrastructure, it is important
-to provide API client developers a central place with online access to the API
-specifications of all running applications. As a part of the infrastructure,
-the API publishing process is used to detect API specifications. The findings
-are published in the API Portal - the universal hub for all LINZ Step APIs.</p>
-</div>
-<div class="paragraph">
-<p><strong>Note:</strong> To publish an API, it is still necessary to deploy the artifact
-successful, as we focus the discovery experience on APIs supported by running
-services.</p>
+<p><a href="https://apiportal.app.landonline.govt.nz/">LandOnline API Portal</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -7807,9 +7825,7 @@ definition:</p>
     <span class="key">audience</span>:
       <span class="key">type</span>: <span class="string"><span class="content">string</span></span>
       <span class="key">enum</span>:
-        - <span class="string"><span class="content">component-internal</span></span>
         - <span class="string"><span class="content">company-internal</span></span>
-        - <span class="string"><span class="content">external-partner</span></span>
         - <span class="string"><span class="content">external-public</span></span>
       <span class="key">description</span>: <span class="string"><span class="delimiter">|</span><span class="content">
         Intended target audience of the event type, analogue to audience definition for REST APIs
@@ -9706,7 +9722,7 @@ to see a list of all changes.</p>
 <p><code>2018-01-10:</code> Moved meta information related aspects into new chapter <a href="#meta-information">REST Basics - Meta information</a>.</p>
 </li>
 <li>
-<p><code>2018-01-09:</code> Changed publication requirements for API specifications (<a href="#192"><span class="must-keyword"><strong>MUST</strong></span> publish OpenAPI specification&#8201;&#8212;&#8201;(Under construction)</a>).</p>
+<p><code>2018-01-09:</code> Changed publication requirements for API specifications (<a href="#192"><span class="must-keyword"><strong>MUST</strong></span> publish OpenAPI specification</a>).</p>
 </li>
 <li>
 <p><code>2017-12-07:</code> Added best practices section including discussion about optimistic locking approaches.</p>
@@ -9909,7 +9925,7 @@ window.cookieconsent.initialise({
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-20 03:54:29 UTC
+Last updated 2024-06-18 00:47:35 UTC
 </div>
 </div>
 </body>
