@@ -196,6 +196,10 @@ For each environment, the upstream target must adhere to specific URL patterns:
      Mandatory extension used to determine upstream targets based on the environment. Ensure that the URLs conform to the specified patterns for each environment.
 ----
 
+== {MAY} Provide Gateway Upstream Targets for postprod env
+
+When you have postprod environment ready, configure the API proxy with API Gateway upstream target for postprod environment
+
 Example:
 
 [source,yaml]
@@ -208,7 +212,7 @@ x-gateway-upstream-targets:
     prod: https://api.enablement.awsint.linz.govt.nz/
     dev: https://httpbin.org/anything
     env: https://api.preprod.enablement.awsint.linz.govt.nz/extra/path
-
+    postprod: https://api.postprod.landonline.govt.nz/v1/auth
 <...>
 ----
 
@@ -235,6 +239,11 @@ where the resource identifier is provided by authorization information (see <<14
      Mandatory field used to determine url based on environment.
 ----
 
+== {MAY} provide optional environment `postprod` for server url
+
+We have introduced an optional environment called `postprod` for API proxies in Tyk i.e. api.postprod.landonline.govt.nz
+Specify this environment for the server URL when you have `postprod` env ready
+
 Example:
 
 [source,yaml]
@@ -251,6 +260,7 @@ servers:
         enum:
           - .dev
           - .env
+          - .postprod
         default: .dev
 <...>
 ----
