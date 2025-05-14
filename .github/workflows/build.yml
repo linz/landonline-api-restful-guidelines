@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       - name: Build
         run: |
           make check-rules > check-rule-ids.log
@@ -22,7 +22,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847 # v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./output
