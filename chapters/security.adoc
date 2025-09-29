@@ -62,10 +62,72 @@ Remember that the resource owner squad holds the authority to approve a client r
 
 For audiences like the external-public, there's no requirement to define a specific scope. If a single service needs to serve multiple audiences, it's often best to create separate API specifications to manage access control effectively. Refer to <<219, MUST provide audience>> for more details.
 
+[#300]
+== {MUST} validate x-api-rate-limit extension
 
+When using the `x-api-rate-limit` extension in your OpenAPI specification, you must ensure it follows the required structure and validation rules. This extension can be applied at both the `info` level (for API-wide rate limiting) and at individual operation levels.
 
+=== Required Properties
 
+The `x-api-rate-limit` extension must be an object containing the following required properties:
 
+* `enabled` (boolean): Indicates whether rate limiting is enabled
+* `rate` (integer): The maximum number of requests allowed (must be greater than 0)
+* `per` (string): The time window for the rate limit, specified as a number followed by a time unit (s/m/h/d)
 
+=== Time Unit Format
+
+The `per` property must follow the pattern: a number followed by one of these time units:
+* `s` - seconds
+* `m` - minutes
+* `h` - hours
+* `d` - days
+
+Examples: `30s`, `5m`, `1h`, `2d`
+
+=== Operation-Level Requirements
+
+When `x-api-rate-limit` is applied to an operation, that operation *must* have an `operationId` defined.
+
+=== Examples
+
+==== API-level rate limiting:
+[source,yaml]
+----
+info:
+  title: My API
+  version: 1.0.0
+  x-api-rate-limit:
+    enabled: true
+    rate: 1000
+    per: "1h"
+----
+
+==== Operation-level rate limiting:
+[source,yaml]
+----
+paths:
+  /search:
+    get:
+      operationId: searchData
+      x-api-rate-limit:
+        enabled: true
+        rate: 100
+        per: "5m"
+      responses:
+        '200':
+          description: Success
+----
+
+=== Validation Rules
+
+The following violations will be flagged:
+
+* Missing required properties (`enabled`, `rate`, `per`)
+* Invalid data types (e.g., `enabled` not boolean, `rate` not integer)
+* Invalid `rate` value (must be > 0)
+* Invalid `per` format (must match time unit pattern)
+* Missing `operationId` when rate limit is applied to an operation
+* `x-api-rate-limit` not being an object
 
 
