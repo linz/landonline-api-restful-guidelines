@@ -5,5 +5,5 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-    ignore:
-      - dependency-name: peaceiris/actions-gh-pages
+    cooldown:
+      default-days: 15
