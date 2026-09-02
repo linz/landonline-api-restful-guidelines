@@ -1,0 +1,17 @@
+name: Snyk Security Scan
+on:
+  pull_request:
+    branches: [main, master, develop]
+  push:
+    branches: [main, master, develop]
+jobs:
+  snyk:
+    uses: linz/github-action-shared-library/.github/workflows/snyk-workflow.yml@master
+    with:
+      snykOrgName: "kapua"
+      snykAlwaysPass: true
+      severityThreshold: medium
+      strictOutOfSync: true
+      backendDisable: true
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
