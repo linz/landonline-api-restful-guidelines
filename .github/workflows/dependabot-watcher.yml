@@ -1,0 +1,27 @@
+name: Dependabot Watcher
+on:
+  workflow_run:
+    workflows:
+      # The Dependabot workflow is always called "Dependabot Updates"
+      - Dependabot Updates
+    types:
+      # Options: https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run
+      - completed
+jobs:
+  trigger-on-failure-dependabot-update:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - name: notify Enablement team on failure
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
+        with:
+          # channel C011KTYT6F3 #team-step-enablement-build-notifications
+          # S03Q6TE9FND = @enable-devs slack team
+          payload: |
+            channel: C011KTYT6F3
+            text: |
+              :alert: ❌ *Dependabot job failed* ❌ :alert:
+              *Repo:* ${{ github.repository }}
+              *Run:* <${{ github.event.workflow_run.html_url }}|View failed run>
+          token: ${{ secrets.SLACK_STEP_GITHUB_ACTION_BOT_TOKEN }} #this is an org secret.
+          method: chat.postMessage
