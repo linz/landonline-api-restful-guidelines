@@ -293,6 +293,10 @@ for (var i = 0; i < h3headers.length; i++) {
     if (header.id && header.id.match(ruleIdRegEx)) {
         var a = header.getElementsByTagName("a")[0]
         a.innerHTML += " [" + header.id + "]";
+        var tocLink = document.querySelector('#toc a[href="#' + header.id + '"]');
+        if (tocLink) {
+            tocLink.appendChild(document.createTextNode(" [" + header.id + "]"));
+        }
     }
 }
 </script>
