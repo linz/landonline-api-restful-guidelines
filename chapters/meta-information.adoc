@@ -178,7 +178,7 @@ x-audience and hostnames are intricately linked. More to come.
 [#251]
 == {MUST} Provide Gateway Upstream Targets
 
-Configure the API gateway upstream target, i.e., the API Provider. You must specify one upstream target for each environment: *dev*, *preprod*, and *prod*.
+Configure the API gateway upstream target, i.e., the API Provider. You must specify one upstream target for each environment: *dev*, *preprod*, *postprod* and *prod*.
 
 These environments align with the enterprise domain naming conventions. For simplicity, consider *nonprod* and *preprod* in the step to relate to *dev* and *env* in the _enterprise_ respectively.
 
@@ -196,9 +196,9 @@ For each environment, the upstream target must adhere to specific URL patterns:
      Mandatory extension used to determine upstream targets based on the environment. Ensure that the URLs conform to the specified patterns for each environment.
 ----
 
-== {MAY} Provide Gateway Upstream Targets for postprod env
+== {MAY} Provide Gateway Upstream Targets for yae env
 
-When you have postprod environment ready, configure the API proxy with API Gateway upstream target for postprod environment
+When you have yae environment ready, configure the API proxy with API Gateway upstream target for yae environment
 
 Example:
 
@@ -213,6 +213,7 @@ x-gateway-upstream-targets:
     dev: https://httpbin.org/anything
     env: https://api.preprod.enablement.awsint.linz.govt.nz/extra/path
     postprod: https://api.postprod.landonline.govt.nz/v1/auth
+    yae: https://api.yae.landonline.govt.nz/v1/auth
 <...>
 ----
 
