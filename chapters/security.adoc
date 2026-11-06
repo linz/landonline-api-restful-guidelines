@@ -30,7 +30,7 @@ At LINZ (STEP) every API must define and set security permissions, also known as
 
 The format for scopes follows the regex pattern `[a-zA-Z\-]{4,15}:default`. This means the name of the scope should consist of 4 to 15 alphanumeric characters (or hyphens), followed by `:default`. The `:default` part indicates that these are the default permissions for the respective service.
 
-Scopes are defined as part of the security requirement object at the root level of your API definition, allowing for a default scope that applies to all operations within the API. Please note that currently, only the root security can be set in our system.
+Scopes are defined as part of the security requirement object at the root level of your API definition, allowing for a default scope that applies to all operations within the API. An individual operation can override this default; see <<operation-scopes>>.
 
 Example:
 
@@ -43,7 +43,8 @@ components:
       scheme: bearer
       bearerFormat: JWT
 security:
-- BearerAuth: [ 'search:default' ]
+  - BearerAuth: 
+    - search:default
 paths:
   /registeredclients-only-information:
     get:
@@ -58,6 +59,80 @@ It's critical to understand that any new scope must be https://github.com/linz/l
 Remember that the resource owner squad holds the authority to approve a client registering to a scope. Therefore, always ensure their approval before proceeding with scope creation.
 
 For audiences like the external-public, there's no requirement to define a specific scope. If a single service needs to serve multiple audiences, it's often best to create separate API specifications to manage access control effectively. Refer to <<219, MUST provide audience>> for more details.
+
+[[operation-scopes]]
+=== Overriding the root scope on an operation
+
+An operation (for example `get` under a path) can declare its own `security`. When it does, its scopes *replace* the root scopes for that operation; they aren't merged. Operations without their own `security` use the root scopes. This matches the OpenAPI specification.
+
+[source,yaml]
+----
+security:
+  - BearerAuth:
+    - requests:default
+paths:
+  /requests/v1/{requestId}:
+    get:                           # no security: uses requests:default
+      ...
+  /requests/v1/{requestId}/status:
+    get:
+      security:
+        - BearerAuth:
+          - requests:read-status   # replaces requests:default
+      ...
+----
+
+In this example, a token with only `requests:default` can't call `GET /requests/v1/{requestId}/status`. If the root scope should still grant access, list it on the operation too. Several scopes are ORed; see <<multiple-scopes>>.
+
+[source,yaml]
+----
+      security:
+        - BearerAuth:
+          - requests:default
+          - requests:read-status
+----
+
+Things to know:
+
+* The root scopes must match `[a-zA-Z\-]{4,15}:default`. Operation scopes can be more specific and must match `[a-zA-Z\-]{4,15}:[a-zA-Z]{3,7}(-[a-zA-Z\-]{3,20})?`, for example `requests:read-status`.
+* The proxy generator creates a Tyk policy for every scope and adds each operation's path and method to the policies for that operation's scopes. A token gets access to an operation only through the operation's own scopes, or the root scopes if it has none.
+* Giving operations different scopes can cause path clashes when an operation has a string path parameter. See <<253>>.
+
+[[multiple-scopes]]
+=== Multiple scopes
+
+NOTE: Our gateway handles multiple scopes differently from the OpenAPI specification.
+
+If you list several scopes in one security requirement, a caller with *any one* of them can call the operation:
+
+[source,yaml]
+----
+security:
+  - BearerAuth: 
+    - search:read
+    - search:admin    # search:read OR search:admin
+----
+
+The proxy generator creates one Tyk policy per scope, and Tyk allows a request if any policy applied to the token allows it.
+
+This differs from the OpenAPI specification:
+
+* *AND becomes OR.* OpenAPI requires all scopes in one requirement object. Our gateway accepts any one of them, so you can't use this to require several scopes together.
+* *Only the first requirement object is used.* OpenAPI expresses OR as separate entries in the `security` array. We ignore every entry after the first, without warning, so callers holding only those scopes are refused.
++
+[source,yaml]
+----
+security:
+  - BearerAuth: 
+    - search:default  # used
+  - BearerAuth:
+    - search:admin  # ignored
+----
+* *Scopes on a bearer scheme are a LINZ convention.* OpenAPI 3.0 requires the scope list to be empty for schemes other than `oauth2` and `openIdConnect`; 3.1 allows only role names. Generic OpenAPI tools may ignore or flag our scopes.
+* *Empty lists mean something different.* An operation with `security: []` is public in OpenAPI, but here it uses the root scopes. `BearerAuth: []` means "any valid token" in OpenAPI, but here no one can call that operation.
+* *Only one security scheme is used*, the first in `components.securitySchemes`.
+
+Always write scopes as a YAML list, either inline (`[ 'search:default' ]`) or as a block list. A bare value such as `BearerAuth: search:default` is a string, not a list. It isn't rejected, but it produces broken policies.
 
 [#300]
 == {MUST} validate x-api-rate-limit extension
